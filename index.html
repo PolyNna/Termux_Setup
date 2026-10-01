@@ -6,904 +6,960 @@
 
 <title>TERMUX — PHONE AS A LAPTOP | NNANNA POLYCARP</title>
 
-<style>
+<meta name="description"
+      content="TERMUX — PHONE AS A LAPTOP. A practical tutorial for building a Linux desktop environment on Android using Termux, Termux:X11, PRoot-Distro, Debian and XFCE. By NNANNA POLYCARP.">
 
+<style>
 /* =========================================================
    TERMUX — PHONE AS A LAPTOP
-   COMPLETE BOOK DESIGN
+   Complete self-contained tutorial book
    Author: NNANNA POLYCARP
    ========================================================= */
 
-:root {
-    --wine: #46152d;
-    --plum: #32112f;
-    --purple: #6f2da8;
-    --purple2: #8b45c2;
-    --copper: #c56b32;
-    --orange: #ed8a32;
-    --cream: #f7f0e2;
-    --paper: #fffdf8;
-    --ink: #25222a;
-    --muted: #69616c;
-    --teal: #2d7775;
-    --green: #2f8b57;
-    --red: #a83c3c;
-    --terminal: #101314;
-    --terminal-text: #d8f7df;
-    --border: #ded2c3;
-    --shadow: 0 14px 40px rgba(40,20,35,.13);
+:root{
+  --wine:#431d32;
+  --wine2:#612b45;
+  --plum:#281522;
+  --copper:#c77b4a;
+  --copper2:#e1a06d;
+  --cream:#f7f0e4;
+  --paper:#fffaf1;
+  --ink:#29232a;
+  --muted:#716873;
+  --teal:#397c78;
+  --teal2:#d9eeeb;
+  --gold:#d5a64c;
+  --red:#a94442;
+  --green:#3f7657;
+  --line:#dfd0c0;
+  --shadow:0 18px 45px rgba(40,21,34,.16);
+  --radius:18px;
+  --mono:"Cascadia Code","Fira Code","SFMono-Regular",Consolas,monospace;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
 }
 
-html {
-    scroll-behavior: smooth;
+body{
+  margin:0;
+  background:#d9d0c8;
+  color:var(--ink);
+  font-family:var(--serif);
+  line-height:1.75;
 }
 
-body {
-    margin: 0;
-    background:
-        radial-gradient(circle at 10% 10%, rgba(111,45,168,.08), transparent 30%),
-        radial-gradient(circle at 90% 30%, rgba(197,107,50,.08), transparent 28%),
-        #e9e1d6;
-    color: var(--ink);
-    font-family: Georgia, "Times New Roman", serif;
-    line-height: 1.7;
-}
-
-/* =========================================================
-   DIGITAL READER
-   ========================================================= */
-
-.book {
-    width: min(100%, 900px);
-    margin: 30px auto;
-}
-
-.page {
-    position: relative;
-    background: var(--paper);
-    min-height: 1120px;
-    margin: 28px 0;
-    padding: 75px 80px 85px;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    break-after: page;
-    page-break-after: always;
-}
-
-.page::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    border: 1px solid rgba(70,21,45,.08);
+button,
+input{
+  font:inherit;
 }
 
 /* =========================================================
-   TYPOGRAPHY
+   BOOK SHELL
    ========================================================= */
 
-h1,
-h2,
-h3,
-h4 {
-    font-family: Arial, Helvetica, sans-serif;
-    line-height: 1.15;
-    color: var(--wine);
+.book{
+  width:min(100%,1100px);
+  margin:auto;
+  background:var(--paper);
+  box-shadow:var(--shadow);
 }
 
-h1 {
-    font-size: 46px;
-    margin-top: 0;
+.page{
+  padding:70px clamp(22px,6vw,82px);
+  position:relative;
+  overflow:hidden;
 }
 
-h2 {
-    font-size: 31px;
-    margin-top: 0;
+.page + .page{
+  border-top:1px solid var(--line);
 }
 
-h3 {
-    font-size: 21px;
-    margin-top: 34px;
+h1,h2,h3,h4{
+  font-family:var(--sans);
+  line-height:1.15;
+  color:var(--plum);
 }
 
-p {
-    margin: 0 0 17px;
+h1{
+  font-size:clamp(2.3rem,6vw,4.8rem);
+  letter-spacing:-.04em;
+  margin:0 0 18px;
 }
 
-.lead {
-    font-size: 20px;
-    color: #514952;
-    line-height: 1.65;
+h2{
+  font-size:clamp(1.9rem,4vw,3rem);
+  margin:0 0 25px;
 }
 
-.small {
-    font-size: 13px;
-    color: var(--muted);
+h3{
+  font-size:1.35rem;
+  margin-top:42px;
 }
 
-.center {
-    text-align: center;
+h4{
+  font-size:1rem;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  color:var(--teal);
+}
+
+p{
+  max-width:78ch;
+}
+
+a{
+  color:var(--teal);
+  font-weight:600;
+}
+
+strong{
+  color:var(--plum);
 }
 
 /* =========================================================
-   COVER
+   FRONT COVER
    ========================================================= */
 
-.cover {
-    min-height: 1120px;
-    padding: 0;
-    color: white;
-    background:
-        linear-gradient(
-            135deg,
-            rgba(20,10,27,.97),
-            rgba(50,17,47,.93) 48%,
-            rgba(24,20,35,.96)
-        );
+.cover{
+  min-height:100vh;
+  min-height:900px;
+  color:white;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(225,160,109,.28),transparent 25%),
+    radial-gradient(circle at 15% 80%,rgba(57,124,120,.23),transparent 28%),
+    linear-gradient(145deg,#21111d 0%,#431d32 50%,#642d48 100%);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  padding:65px clamp(28px,7vw,85px);
+  position:relative;
 }
 
-.cover::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-        linear-gradient(120deg, transparent 30%, rgba(197,107,50,.12), transparent 65%),
-        repeating-linear-gradient(
-            90deg,
-            transparent 0,
-            transparent 58px,
-            rgba(255,255,255,.025) 59px
-        );
+.cover:before{
+  content:"";
+  position:absolute;
+  inset:20px;
+  border:1px solid rgba(225,160,109,.4);
+  pointer-events:none;
 }
 
-.cover-content {
-    position: relative;
-    z-index: 2;
-    padding: 70px 70px 55px;
+.cover-top{
+  position:relative;
+  z-index:2;
 }
 
-.cover-kicker {
-    font-family: Arial, sans-serif;
-    letter-spacing: 4px;
-    font-weight: 700;
-    font-size: 15px;
-    color: #e8c2a5;
+.eyebrow{
+  font-family:var(--sans);
+  color:var(--copper2);
+  font-size:.85rem;
+  font-weight:800;
+  letter-spacing:.25em;
+  text-transform:uppercase;
 }
 
-.cover h1 {
-    color: #ffbd53;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: clamp(58px, 10vw, 94px);
-    letter-spacing: -4px;
-    margin: 22px 0 4px;
-    text-transform: uppercase;
+.cover h1{
+  color:white;
+  max-width:850px;
+  margin-top:25px;
 }
 
-.cover-title {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: clamp(30px, 5vw, 54px);
-    font-weight: 900;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: -2px;
+.cover-subtitle{
+  font-family:var(--sans);
+  font-size:clamp(1rem,2vw,1.3rem);
+  max-width:600px;
+  color:#eadbd0;
 }
 
-.cover-subtitle {
-    font-family: Arial, sans-serif;
-    font-size: 22px;
-    max-width: 650px;
-    margin-top: 18px;
-    color: #eadfe7;
+.author{
+  font-family:var(--sans);
+  text-transform:uppercase;
+  letter-spacing:.16em;
+  font-weight:800;
+  color:var(--copper2);
 }
 
-.cover-badge {
-    display: inline-block;
-    margin-top: 25px;
-    padding: 10px 17px;
-    border: 2px solid var(--orange);
-    border-radius: 30px;
-    font-family: Arial, sans-serif;
-    font-weight: 800;
-    color: #ffd07a;
+/* Phone/laptop cover illustration */
+
+.cover-art{
+  position:absolute;
+  right:7%;
+  top:18%;
+  width:min(40vw,380px);
+  height:420px;
+  opacity:.95;
 }
 
-.cover-stage {
-    position: relative;
-    height: 455px;
-    margin-top: 20px;
-    border-radius: 25px;
-    overflow: hidden;
-    background:
-        linear-gradient(145deg, #16151b, #27182e);
-    border: 1px solid rgba(255,255,255,.16);
+.laptop{
+  position:absolute;
+  width:290px;
+  height:190px;
+  right:0;
+  top:90px;
+  border:7px solid #17141a;
+  border-radius:12px 12px 5px 5px;
+  background:
+    linear-gradient(135deg,#294d50,#182d31);
+  box-shadow:0 25px 40px rgba(0,0,0,.35);
+  transform:perspective(700px) rotateY(-10deg);
 }
 
-/* laptop */
-
-.laptop {
-    position: absolute;
-    width: 68%;
-    right: 5%;
-    top: 40px;
+.laptop:after{
+  content:"";
+  position:absolute;
+  left:-38px;
+  right:-38px;
+  bottom:-28px;
+  height:28px;
+  background:#161319;
+  border-radius:3px 3px 16px 16px;
 }
 
-.laptop-screen {
-    height: 300px;
-    border: 10px solid #202027;
-    border-bottom-width: 17px;
-    border-radius: 15px 15px 4px 4px;
-    background:
-        linear-gradient(135deg, #2f164c, #752d79 50%, #c75c36);
-    box-shadow: 0 25px 40px rgba(0,0,0,.4);
-    padding: 24px;
+.laptop-screen{
+  position:absolute;
+  inset:18px;
+  border:1px solid rgba(255,255,255,.2);
+  background:#1e1822;
+  overflow:hidden;
+  padding:14px;
+  font-family:var(--mono);
+  font-size:9px;
+  color:#d8c7b9;
 }
 
-.desktop {
-    width: 100%;
-    height: 100%;
-    background: rgba(18,18,23,.78);
-    border-radius: 7px;
-    padding: 15px;
+.phone{
+  position:absolute;
+  width:130px;
+  height:255px;
+  left:25px;
+  top:115px;
+  border:7px solid #17141a;
+  border-radius:24px;
+  background:#20232a;
+  transform:rotate(-9deg);
+  box-shadow:0 25px 40px rgba(0,0,0,.4);
 }
 
-.desktop-bar {
-    height: 22px;
-    background: #15151a;
-    border-radius: 5px;
-    margin-bottom: 13px;
+.phone:before{
+  content:"";
+  position:absolute;
+  width:45px;
+  height:6px;
+  background:#17141a;
+  border-radius:20px;
+  top:7px;
+  left:50%;
+  transform:translateX(-50%);
 }
 
-.terminal-window {
-    background: #090b0c;
-    border: 1px solid #3e4548;
-    border-radius: 8px;
-    padding: 15px;
-    color: #bff5c7;
-    font-family: "Courier New", monospace;
-    font-size: 12px;
+.phone-screen{
+  position:absolute;
+  inset:12px 7px;
+  border-radius:16px;
+  background:linear-gradient(145deg,#38203a,#1e3739);
+  padding:34px 8px 8px;
+  font-family:var(--mono);
+  font-size:7px;
+  color:#d9eee9;
 }
 
-.laptop-base {
-    height: 22px;
-    background: linear-gradient(#7c7b80, #33343a);
-    clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
-    box-shadow: 0 15px 20px rgba(0,0,0,.4);
+/* =========================================================
+   BACK COVER
+   ========================================================= */
+
+.back-cover{
+  min-height:850px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(199,123,74,.2),transparent 30%),
+    linear-gradient(145deg,#24141f,#431d32);
+  color:#eee4dc;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:70px clamp(30px,8vw,100px);
 }
 
-/* phone */
-
-.phone {
-    position: absolute;
-    width: 155px;
-    height: 305px;
-    left: 7%;
-    bottom: 28px;
-    background: #09090b;
-    border: 6px solid #37333b;
-    border-radius: 27px;
-    padding: 11px;
-    transform: rotate(-5deg);
-    box-shadow: 0 25px 35px rgba(0,0,0,.5);
+.back-cover h2{
+  color:white;
+  max-width:750px;
 }
 
-.phone-screen {
-    height: 100%;
-    background: #080b0d;
-    border-radius: 17px;
-    padding: 18px 10px;
-    color: #bdf9c6;
-    font-family: "Courier New", monospace;
-    font-size: 9px;
+.back-cover p{
+  color:#e1d4cc;
+  max-width:720px;
 }
 
-.cover-features {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 9px 20px;
-    margin-top: 25px;
-    font-family: Arial, sans-serif;
-    font-size: 14px;
+.back-box{
+  border-left:4px solid var(--copper);
+  padding:20px 25px;
+  margin:35px 0;
+  background:rgba(255,255,255,.05);
 }
 
-.cover-features div::before {
-    content: "✓";
-    color: #7ff28e;
-    font-weight: 900;
-    margin-right: 8px;
-}
-
-.author {
-    margin-top: 38px;
-    text-align: right;
-    font-family: Arial, sans-serif;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 3px;
+.back-author{
+  margin-top:60px;
+  color:var(--copper2);
+  font-family:var(--sans);
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-weight:800;
 }
 
 /* =========================================================
    FRONT MATTER
    ========================================================= */
 
-.front-title {
-    text-align: center;
-    padding-top: 230px;
+.title-page{
+  text-align:center;
+  min-height:720px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
 }
 
-.front-title .rule {
-    width: 100px;
-    height: 5px;
-    margin: 25px auto;
-    background: var(--copper);
+.title-page .small{
+  font-family:var(--sans);
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  color:var(--teal);
+  font-weight:800;
 }
 
-.quote {
-    border-left: 5px solid var(--copper);
-    padding: 18px 25px;
-    margin: 30px 0;
-    background: #f8f0e7;
-    font-style: italic;
-    font-size: 19px;
+.title-page h1{
+  max-width:850px;
 }
 
-/* =========================================================
-   TOC
-   ========================================================= */
-
-.toc-row {
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin: 12px 0;
-    font-family: Arial, sans-serif;
+.title-page .rule{
+  width:90px;
+  height:4px;
+  background:var(--copper);
+  margin:30px auto;
 }
 
-.toc-row .dots {
-    flex: 1;
-    border-bottom: 2px dotted #c8bcae;
+.title-page .author{
+  color:var(--wine);
 }
 
-.toc-row strong {
-    color: var(--wine);
+.copyright{
+  min-height:500px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
-/* =========================================================
-   CHAPTER OPENERS
-   ========================================================= */
-
-.chapter-opener {
-    background:
-        linear-gradient(135deg, var(--plum), var(--wine));
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.chapter-number {
-    font-family: Arial, sans-serif;
-    font-size: 130px;
-    line-height: .8;
-    font-weight: 900;
-    color: rgba(255,255,255,.13);
-}
-
-.chapter-opener h1 {
-    color: white;
-    font-size: 50px;
-    max-width: 650px;
-}
-
-.chapter-opener p {
-    max-width: 650px;
-    font-size: 21px;
-    color: #eadde6;
-}
-
-.chapter-tag {
-    font-family: Arial, sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    color: #ffc27a;
-    font-size: 13px;
-    font-weight: 800;
+.copyright-card{
+  border:1px solid var(--line);
+  padding:30px;
+  background:#fbf4e9;
 }
 
 /* =========================================================
-   TERMINAL BLOCKS
+   TABLE OF CONTENTS
    ========================================================= */
 
-.terminal {
-    margin: 25px 0;
-    background: var(--terminal);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 12px 25px rgba(0,0,0,.15);
+.toc-list{
+  list-style:none;
+  padding:0;
+  margin:30px 0;
 }
 
-.terminal-head {
-    background: #202427;
-    padding: 9px 14px;
-    color: #bfc7c9;
-    font: 12px Arial, sans-serif;
+.toc-list li{
+  border-bottom:1px dotted var(--line);
+  padding:13px 0;
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
 }
 
-.terminal-head span {
-    display: inline-block;
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    margin-right: 5px;
-    background: #777;
+.toc-list a{
+  text-decoration:none;
 }
 
-.terminal-body {
-    padding: 18px;
-    color: var(--terminal-text);
-    font: 14px/1.65 "Courier New", monospace;
-    white-space: pre-wrap;
-    overflow-x: auto;
-}
-
-.command {
-    color: #fff;
-}
-
-.output {
-    color: #9bd9a7;
-}
-
-.copy {
-    float: right;
-    border: 1px solid #777;
-    background: transparent;
-    color: white;
-    padding: 3px 8px;
-    border-radius: 5px;
-    cursor: pointer;
+.toc-list .num{
+  font-family:var(--sans);
+  font-weight:800;
+  color:var(--copper);
 }
 
 /* =========================================================
-   INFORMATION BOXES
+   CHAPTER HEADERS
    ========================================================= */
 
-.box {
-    margin: 25px 0;
-    padding: 19px 22px;
-    border-radius: 10px;
-    border-left: 6px solid;
+.chapter{
+  padding-top:95px;
 }
 
-.box h3 {
-    margin: 0 0 7px;
-    font-size: 17px;
+.chapter-number{
+  font-family:var(--sans);
+  color:var(--copper);
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  font-size:.85rem;
 }
 
-.info {
-    background: #edf5f5;
-    border-color: var(--teal);
+.chapter-title{
+  max-width:850px;
 }
 
-.tip {
-    background: #f8f1df;
-    border-color: #d09235;
-}
-
-.warning {
-    background: #f9e9e6;
-    border-color: var(--red);
-}
-
-.success {
-    background: #eaf5ed;
-    border-color: var(--green);
-}
-
-.error {
-    background: #271b20;
-    border-color: #d85b63;
-    color: #f8dfe2;
-}
-
-.error h3 {
-    color: #ff9aa2;
+.chapter-lead{
+  font-size:1.18rem;
+  color:var(--muted);
+  max-width:760px;
 }
 
 /* =========================================================
-   CHECKPOINT
+   TEACHING COMPONENTS
    ========================================================= */
 
-.checkpoint {
-    margin: 35px 0;
-    padding: 24px;
-    border: 2px solid var(--copper);
-    background:
-        linear-gradient(135deg, #fff8ee, #f6e9dc);
-    border-radius: 13px;
+.where{
+  background:linear-gradient(135deg,#eef6f4,#e1efec);
+  border:1px solid #c6dfdb;
+  border-left:5px solid var(--teal);
+  border-radius:var(--radius);
+  padding:24px 28px;
+  margin:30px 0;
 }
 
-.checkpoint-title {
-    font-family: Arial, sans-serif;
-    color: var(--wine);
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+.where strong{
+  color:var(--teal);
+}
+
+.lesson{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:white;
+  padding:28px;
+  margin:30px 0;
+  box-shadow:0 8px 24px rgba(40,21,34,.06);
+}
+
+.lesson-number{
+  font-family:var(--sans);
+  font-weight:900;
+  color:var(--copper);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  font-size:.78rem;
+}
+
+.what{
+  background:#fff7e8;
+  border:1px solid #edd6a8;
+  border-left:5px solid var(--gold);
+  padding:20px 24px;
+  border-radius:12px;
+  margin:22px 0;
+}
+
+.tip{
+  background:#edf7f5;
+  border:1px solid #c9e1dd;
+  border-left:5px solid var(--teal);
+  padding:20px 24px;
+  border-radius:12px;
+  margin:22px 0;
+}
+
+.warning{
+  background:#fff0ee;
+  border:1px solid #ecc9c4;
+  border-left:5px solid var(--red);
+  padding:20px 24px;
+  border-radius:12px;
+  margin:22px 0;
+}
+
+.success{
+  background:#eef8f0;
+  border:1px solid #c9dfce;
+  border-left:5px solid var(--green);
+  padding:20px 24px;
+  border-radius:12px;
+  margin:22px 0;
+}
+
+.error{
+  background:#291c22;
+  color:#f4e6de;
+  border-radius:var(--radius);
+  padding:24px;
+  margin:25px 0;
+  font-family:var(--mono);
+  overflow:auto;
+}
+
+.checkpoint{
+  background:linear-gradient(135deg,#431d32,#642d48);
+  color:white;
+  padding:28px;
+  border-radius:var(--radius);
+  margin:35px 0;
+}
+
+.checkpoint h3{
+  color:var(--copper2);
+  margin-top:0;
+}
+
+.check-list{
+  list-style:none;
+  padding:0;
+}
+
+.check-list li{
+  padding:7px 0;
+}
+
+.check-list li:before{
+  content:"✓";
+  color:#9bd2a7;
+  font-weight:bold;
+  margin-right:10px;
 }
 
 /* =========================================================
-   DIAGRAMS
+   COMMAND CARDS
+   ONE COMMAND PER CARD
    ========================================================= */
 
-.diagram {
-    margin: 30px 0;
-    padding: 25px;
-    background: #f1ece6;
-    border-radius: 15px;
-    text-align: center;
-    font-family: Arial, sans-serif;
+.command-card{
+  margin:25px 0;
+  border-radius:15px;
+  overflow:hidden;
+  background:#1e1820;
+  box-shadow:0 12px 30px rgba(20,10,16,.18);
 }
 
-.node {
-    display: inline-block;
-    padding: 13px 22px;
-    background: var(--wine);
-    color: white;
-    border-radius: 8px;
-    font-weight: 800;
-    margin: 5px;
+.command-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:11px 15px;
+  background:#2b2028;
+  color:#cbb9b0;
+  font-family:var(--sans);
+  font-size:.75rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.1em;
 }
 
-.arrow {
-    font-size: 25px;
-    color: var(--copper);
-    display: block;
+.copy-btn{
+  border:1px solid #765266;
+  background:#432638;
+  color:#f1ddd0;
+  border-radius:8px;
+  padding:7px 11px;
+  cursor:pointer;
+  font-family:var(--sans);
+  font-size:.72rem;
+}
+
+.copy-btn:hover{
+  background:#61354e;
+}
+
+.command-card pre{
+  margin:0;
+  padding:22px;
+  overflow:auto;
+  color:#f1dcc9;
+  font-family:var(--mono);
+  font-size:.92rem;
+  line-height:1.6;
+}
+
+.command-explain{
+  background:#fff;
+  color:var(--ink);
+  padding:20px 23px;
+  border-top:1px solid #40313a;
+}
+
+.command-explain strong{
+  color:var(--wine);
 }
 
 /* =========================================================
-   TABLES
+   OUTPUT
    ========================================================= */
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 25px 0;
-    font-size: 14px;
+.output{
+  margin:20px 0 30px;
+  border:1px solid #d7cec7;
+  border-radius:14px;
+  overflow:hidden;
 }
 
-th {
-    background: var(--wine);
-    color: white;
-    font-family: Arial, sans-serif;
+.output-title{
+  background:#eee8e2;
+  padding:9px 15px;
+  font-family:var(--sans);
+  font-weight:800;
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
 }
 
-td,
-th {
-    border: 1px solid var(--border);
-    padding: 10px 12px;
-    text-align: left;
-}
-
-tr:nth-child(even) {
-    background: #faf6ef;
+.output pre{
+  margin:0;
+  padding:18px;
+  overflow:auto;
+  font-family:var(--mono);
+  font-size:.85rem;
+  background:#faf8f5;
 }
 
 /* =========================================================
-   LINKS
+   ARCHITECTURE
    ========================================================= */
 
-a {
-    color: #64308e;
-    font-weight: 700;
+.architecture{
+  display:grid;
+  gap:8px;
+  max-width:620px;
+  margin:35px auto;
 }
 
-.resource-link {
-    display: block;
-    padding: 13px 16px;
-    margin: 10px 0;
-    background: #f5eee5;
-    border-left: 4px solid var(--copper);
-    text-decoration: none;
+.arch-box{
+  padding:15px 20px;
+  text-align:center;
+  border:1px solid var(--line);
+  border-radius:12px;
+  font-family:var(--sans);
+  font-weight:800;
+  background:white;
+}
+
+.arch-box.main{
+  background:var(--wine);
+  color:white;
+  border-color:var(--wine);
+}
+
+.arch-arrow{
+  text-align:center;
+  color:var(--copper);
+  font-size:1.3rem;
+  font-weight:bold;
 }
 
 /* =========================================================
-   PAGE NUMBER
+   PROMPT TABLE
    ========================================================= */
 
-.page-number {
-    position: absolute;
-    bottom: 30px;
-    right: 45px;
-    font: 12px Arial, sans-serif;
-    color: #8b8085;
+.prompt-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:30px 0;
+  font-size:.95rem;
 }
 
-.page-label {
-    position: absolute;
-    bottom: 30px;
-    left: 45px;
-    font: 11px Arial, sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: #a08e98;
+.prompt-table th,
+.prompt-table td{
+  border:1px solid var(--line);
+  padding:13px 15px;
+  text-align:left;
+}
+
+.prompt-table th{
+  background:var(--wine);
+  color:white;
+  font-family:var(--sans);
 }
 
 /* =========================================================
-   RESPONSIVE
+   ERROR / FIX
    ========================================================= */
 
-@media (max-width: 700px) {
+.error-block{
+  margin:35px 0;
+}
 
-    body {
-        background: var(--paper);
-    }
+.error-title{
+  font-family:var(--sans);
+  color:var(--red);
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.1em;
+}
 
-    .book {
-        width: 100%;
-        margin: 0;
-    }
+.fix{
+  border:2px solid #c8dfce;
+  border-radius:var(--radius);
+  padding:25px;
+  background:#f7fcf8;
+  margin-top:20px;
+}
 
-    .page {
-        min-height: auto;
-        margin: 0;
-        padding: 45px 25px 70px;
-        box-shadow: none;
-    }
+.fix h3{
+  color:var(--green);
+  margin-top:0;
+}
 
-    .cover {
-        min-height: 100vh;
-    }
+/* =========================================================
+   RESOURCES
+   ========================================================= */
 
-    .cover-content {
-        padding: 45px 25px;
-    }
+.resource-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-top:30px;
+}
 
-    .cover-stage {
-        height: 380px;
-    }
+.resource{
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:white;
+}
 
-    .laptop {
-        width: 70%;
-        right: 3%;
-    }
+.resource a{
+  display:block;
+  margin-top:10px;
+  word-break:break-word;
+}
 
-    .laptop-screen {
-        height: 230px;
-    }
+/* =========================================================
+   FOOTER / NAVIGATION
+   ========================================================= */
 
-    .phone {
-        width: 115px;
-        height: 235px;
-    }
+.page-footer{
+  margin-top:60px;
+  padding-top:18px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:15px;
+  color:var(--muted);
+  font-family:var(--sans);
+  font-size:.75rem;
+}
 
-    .cover-features {
-        grid-template-columns: 1fr;
-    }
+.return-top{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:50%;
+  background:var(--wine);
+  color:white;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(0,0,0,.2);
+  z-index:20;
+}
 
-    h1 {
-        font-size: 38px;
-    }
+.progress{
+  position:fixed;
+  top:0;
+  left:0;
+  height:4px;
+  width:0;
+  background:var(--copper);
+  z-index:100;
+}
 
-    h2 {
-        font-size: 28px;
-    }
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
-    .chapter-number {
-        font-size: 90px;
-    }
+.search-bar{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:rgba(255,250,241,.94);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:12px 20px;
+  display:flex;
+  gap:10px;
+}
 
-    .chapter-opener h1 {
-        font-size: 40px;
-    }
+.search-bar input{
+  width:100%;
+  max-width:600px;
+  margin:auto;
+  padding:11px 15px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:white;
+}
 
-    .terminal-body {
-        font-size: 12px;
-    }
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:720px){
+
+  body{
+    background:var(--paper);
+  }
+
+  .book{
+    box-shadow:none;
+  }
+
+  .cover{
+    min-height:780px;
+    padding:45px 25px;
+  }
+
+  .cover-art{
+    position:relative;
+    right:auto;
+    top:auto;
+    width:310px;
+    max-width:90%;
+    height:300px;
+    margin:25px auto 0;
+    transform:scale(.82);
+  }
+
+  .laptop{
+    right:0;
+  }
+
+  .phone{
+    left:0;
+  }
+
+  .page{
+    padding:48px 22px;
+  }
+
+  .command-head{
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .command-card pre{
+    font-size:.78rem;
+  }
+
+  .page-footer{
+    flex-direction:column;
+  }
 }
 
 /* =========================================================
    PRINT / PDF
    ========================================================= */
 
-@media print {
+@media print{
 
-    @page {
-        size: A4;
-        margin: 0;
-    }
+  body{
+    background:white;
+  }
 
-    html,
-    body {
-        background: white;
-    }
+  .book{
+    width:100%;
+    box-shadow:none;
+  }
 
-    body {
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
-    }
+  .search-bar,
+  .return-top,
+  .progress,
+  .copy-btn{
+    display:none !important;
+  }
 
-    .book {
-        width: 100%;
-        margin: 0;
-    }
+  .page{
+    page-break-after:always;
+    padding:25mm 20mm;
+  }
 
-    .page {
-        width: 210mm;
-        height: 297mm;
-        min-height: 297mm;
-        margin: 0;
-        padding: 18mm 18mm 20mm;
-        box-shadow: none;
-        overflow: hidden;
-        break-after: page;
-        page-break-after: always;
-    }
+  .cover,
+  .back-cover{
+    min-height:260mm;
+    page-break-after:always;
+  }
 
-    .cover {
-        width: 210mm;
-        height: 297mm;
-        min-height: 297mm;
-        padding: 0;
-    }
+  .chapter{
+    page-break-before:always;
+  }
 
-    .no-print {
-        display: none !important;
-    }
+  .lesson,
+  .command-card,
+  .warning,
+  .success,
+  .checkpoint,
+  .where{
+    break-inside:avoid;
+  }
 
-    a {
-        color: inherit;
-        text-decoration: none;
-    }
+  a{
+    color:inherit;
+    text-decoration:none;
+  }
+
+  @page{
+    size:A4;
+    margin:0;
+  }
 }
-
-/* =========================================================
-   SCREEN CONTROLS
-   ========================================================= */
-
-.reader-controls {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-    z-index: 100;
-    display: flex;
-    gap: 7px;
-}
-
-.reader-controls button {
-    border: 0;
-    background: var(--wine);
-    color: white;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    cursor: pointer;
-    box-shadow: 0 5px 15px rgba(0,0,0,.2);
-}
-
 </style>
 </head>
 
 <body>
 
-<div class="reader-controls no-print">
-    <button onclick="window.print()" title="Print / Save PDF">PDF</button>
-    <button onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Top">↑</button>
-</div>
+<div class="progress" id="progress"></div>
 
-<main class="book">
+<div class="book" id="top">
 
 <!-- ======================================================
-     COVER
+     FRONT COVER
      ====================================================== -->
 
-<section class="page cover">
+<section class="cover">
 
-    <div class="cover-content">
+  <div class="cover-top">
+    <div class="eyebrow">A Practical Android Linux Tutorial</div>
 
-        <div class="cover-kicker">
-            THE COMPLETE PRACTICAL, STEP-BY-STEP GUIDE
-        </div>
+    <h1>TERMUX —<br>PHONE AS A LAPTOP</h1>
 
-        <h1>TERMUX</h1>
+    <p class="cover-subtitle">
+      A step-by-step guide to building a Linux desktop environment
+      on Android — from the first Termux command to a working
+      graphical desktop.
+    </p>
+  </div>
 
-        <div class="cover-title">
-            PHONE AS A LAPTOP
-        </div>
+  <div class="cover-art" aria-hidden="true">
 
-        <div class="cover-subtitle">
-            Turn an Android phone into a practical Linux desktop
-            environment using Termux, Debian, Ubuntu, XFCE and more.
-        </div>
-
-        <div class="cover-badge">
-            REAL COMMANDS • REAL PROBLEMS • REAL SOLUTIONS
-        </div>
-
-        <div class="cover-stage">
-
-            <div class="laptop">
-
-                <div class="laptop-screen">
-
-                    <div class="desktop">
-
-                        <div class="desktop-bar"></div>
-
-                        <div class="terminal-window">
-                            <div>
-                                polycarp@debian:~#
-                            </div>
-
-                            <div>
-                                echo "XFCE desktop is running"
-                            </div>
-
-                            <div>
-                                XFCE desktop is running
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="laptop-base"></div>
-
-            </div>
-
-            <div class="phone">
-
-                <div class="phone-screen">
-
-                    $ pkg update
-
-                    <br><br>
-
-                    $ proot-distro login debian
-
-                    <br><br>
-
-                    root@localhost:~#
-
-                    <br><br>
-
-                    $ startxfce4
-
-                    <br><br>
-
-                    Linux desktop ready...
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="cover-features">
-
-            <div>Termux & Termux:X11</div>
-            <div>Debian & Ubuntu</div>
-            <div>XFCE Desktop</div>
-            <div>Firefox</div>
-            <div>PulseAudio</div>
-            <div>LibreOffice</div>
-            <div>Python & Virtual Environments</div>
-            <div>Thonny</div>
-            <div>ADB & Wireless Debugging</div>
-            <div>Termux:Widget</div>
-            <div>Camera / Android APIs</div>
-            <div>Troubleshooting</div>
-
-        </div>
-
-        <div class="author">
-            BY NNANNA POLYCARP
-        </div>
-
+    <div class="laptop">
+      <div class="laptop-screen">
+        $ pkg update<br>
+        $ proot-distro login debian<br>
+        root@localhost:~#<br><br>
+        $ startxfce4<br>
+        Linux Desktop
+      </div>
     </div>
+
+    <div class="phone">
+      <div class="phone-screen">
+        TERMUX<br><br>
+        root@localhost:~#<br><br>
+        XFCE<br>
+        Firefox<br>
+        Python
+      </div>
+    </div>
+
+  </div>
+
+  <div class="author">
+    NNANNA POLYCARP
+  </div>
 
 </section>
 
@@ -912,195 +968,268 @@ a {
      TITLE PAGE
      ====================================================== -->
 
-<section class="page">
+<section class="page title-page">
 
-    <div class="front-title">
+  <div class="small">A Practical Tutorial</div>
 
-        <div class="chapter-tag">
-            A HANDS-ON TECHNICAL HANDBOOK
-        </div>
+  <h1>TERMUX — PHONE AS A LAPTOP</h1>
 
-        <h1>TERMUX<br>PHONE AS A LAPTOP</h1>
+  <div class="rule"></div>
 
-        <div class="rule"></div>
+  <p style="font-size:1.25rem;max-width:650px;">
+    Learn how to build a Linux desktop environment on an Android
+    phone using Termux, Termux:X11, PRoot-Distro, Debian and XFCE.
+  </p>
 
-        <p class="lead">
-            A practical guide to building a Linux desktop environment
-            on Android — from the first Termux command to a working
-            desktop with applications, audio, Python and automation.
-        </p>
-
-        <p>
-            <strong>NNANNA POLYCARP</strong>
-        </p>
-
-        <p class="small">
-            Written from my actual setup journey, including the errors,
-            failed attempts, fixes and working checkpoints along the way.
-        </p>
-
-    </div>
-
-    <div class="page-number">2</div>
+  <p class="author">NNANNA POLYCARP</p>
 
 </section>
 
 
 <!-- ======================================================
-     COPYRIGHT / NOTE
+     COPYRIGHT
+     ====================================================== -->
+
+<section class="page copyright">
+
+  <h2>Copyright</h2>
+
+  <div class="copyright-card">
+
+    <p>
+      <strong>TERMUX — PHONE AS A LAPTOP</strong>
+    </p>
+
+    <p>
+      A Practical Guide to Building a Linux Desktop Environment on Android
+    </p>
+
+    <p>
+      © 2026 NNANNA POLYCARP
+    </p>
+
+    <p>
+      All rights reserved.
+    </p>
+
+    <p>
+      This book is intended for educational and practical purposes.
+      Software versions, package names, commands and Android behaviour
+      may change over time. Always read the output shown by your own
+      device before continuing.
+    </p>
+
+    <p>
+      The author is not responsible for data loss, device instability,
+      configuration problems or other consequences resulting from
+      following the procedures in this book.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     FOREWORD
      ====================================================== -->
 
 <section class="page">
 
-    <h1>About This Book</h1>
+  <h2>Foreword</h2>
 
+  <p>
+    This book began with a practical problem.
+  </p>
+
+  <p>
+    There were things I needed to do that I would normally use a laptop
+    for, but my laptop was not available.
+  </p>
+
+  <p>
+    Instead of simply waiting for the laptop to become available again,
+    I started looking for alternatives.
+  </p>
+
+  <p>
+    That led to a simple question:
+  </p>
+
+  <div class="checkpoint">
+    <h3>Can an Android phone handle some of the work I normally do on a laptop?</h3>
     <p>
-        I did not write this book as a collection of commands copied
-        from somewhere else. I wrote it from the process I actually
-        went through while trying to turn my Android phone into
-        something much closer to a Linux computer.
+      Not everything. Not perfectly. But perhaps enough to be useful.
     </p>
+  </div>
 
-    <p>
-        That difference matters.
-    </p>
+  <p>
+    The answer required more than installing one application.
+    It required understanding how Android, Termux, Linux distributions,
+    graphical desktops and Android's own process management could work
+    together.
+  </p>
 
-    <p>
-        When something worked, I recorded what I did. When something
-        failed, I recorded the failure. When I found a fix, I recorded
-        the fix at the point where it became necessary.
-    </p>
+  <p>
+    This book therefore teaches the process from the beginning.
+  </p>
 
-    <div class="quote">
-        “If you know where you are, what you are doing and what you
-        should see next, Termux becomes much easier to understand.”
-    </div>
+  <p>
+    It does not assume that you already understand Linux.
+    When a command appears, the book explains where to type it,
+    what the command means, what should happen, and what to check
+    when the expected result does not appear.
+  </p>
 
-    <p>
-        The purpose of this book is therefore not simply to tell you
-        what command to type. It is to help you understand what is
-        happening around that command.
-    </p>
-
-    <div class="box info">
-
-        <h3>Important</h3>
-
-        <p>
-            Commands and package versions can change over time.
-            Always check current official documentation when a package,
-            Android version or repository behaves differently from
-            the examples in this book.
-        </p>
-
-    </div>
-
-    <div class="page-number">3</div>
+  <p>
+    The goal is not simply to make the setup work once.
+    The goal is to understand what you are building.
+  </p>
 
 </section>
 
 
 <!-- ======================================================
-     TOC
+     HOW TO USE THE BOOK
+     ====================================================== -->
+
+<section class="page">
+
+  <h2>How to Use This Book</h2>
+
+  <div class="where">
+    <strong>WHERE AM I?</strong><br>
+    Before typing a command, check which environment you are currently in.
+  </div>
+
+  <div class="what">
+    <strong>WHAT ARE WE DOING?</strong><br>
+    Every major step begins with an explanation of its purpose.
+  </div>
+
+  <div class="tip">
+    <strong>ONE COMMAND AT A TIME</strong><br>
+    Each command has its own copy button. Run it, wait for the result,
+    then continue.
+  </div>
+
+  <div class="warning">
+    <strong>DO NOT SKIP THE CHECKPOINTS.</strong><br>
+    If a step fails, fix that step before moving further into the setup.
+  </div>
+
+  <h3>Recognising Your Prompt</h3>
+
+  <table class="prompt-table">
+    <tr>
+      <th>Prompt</th>
+      <th>Environment</th>
+    </tr>
+    <tr>
+      <td><code>$</code></td>
+      <td>Termux</td>
+    </tr>
+    <tr>
+      <td><code>root@localhost:~#</code></td>
+      <td>Debian / Linux environment</td>
+    </tr>
+    <tr>
+      <td><code>&gt;&gt;&gt;</code></td>
+      <td>Python interpreter</td>
+    </tr>
+  </table>
+
+</section>
+
+
+<!-- ======================================================
+     CONTENTS
      ====================================================== -->
 
 <section class="page" id="contents">
 
-    <h1>Contents</h1>
+  <h2>Contents</h2>
 
-    <div class="toc-row">
-        <span>1. Before We Begin</span>
-        <span class="dots"></span>
-        <strong>5</strong>
-    </div>
+  <ol class="toc-list">
 
-    <div class="toc-row">
-        <span>2. Installing Termux and Termux:X11</span>
-        <span class="dots"></span>
-        <strong>9</strong>
-    </div>
+    <li>
+      <a href="#ch1">
+        <span class="num">01</span>
+        The Idea: Why Build Linux on a Phone?
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>3. Debian, XFCE and the Linux Desktop</span>
-        <span class="dots"></span>
-        <strong>15</strong>
-    </div>
+    <li>
+      <a href="#ch2">
+        <span class="num">02</span>
+        Preparing Android and Installing Termux
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>4. Firefox and the Signal 9 Problem</span>
-        <span class="dots"></span>
-        <strong>21</strong>
-    </div>
+    <li>
+      <a href="#ch3">
+        <span class="num">03</span>
+        Termux:X11, Debian and XFCE
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>5. ADB and Wireless Debugging</span>
-        <span class="dots"></span>
-        <strong>27</strong>
-    </div>
+    <li>
+      <a href="#ch4">
+        <span class="num">04</span>
+        Making the Linux Desktop Appear
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>6. Audio, PulseAudio and Multimedia</span>
-        <span class="dots"></span>
-        <strong>32</strong>
-    </div>
+    <li>
+      <a href="#ch5">
+        <span class="num">05</span>
+        Firefox: The First Real GUI Test
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>7. LibreOffice and Productivity</span>
-        <span class="dots"></span>
-        <strong>37</strong>
-    </div>
+    <li>
+      <a href="#ch6">
+        <span class="num">06</span>
+        Understanding and Fixing Signal 9
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>8. Python, pip, venv and Thonny</span>
-        <span class="dots"></span>
-        <strong>42</strong>
-    </div>
+    <li>
+      <a href="#ch7">
+        <span class="num">07</span>
+        Audio, LibreOffice and Python
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>9. Automation, Termux:Widget and Android APIs</span>
-        <span class="dots"></span>
-        <strong>48</strong>
-    </div>
+    <li>
+      <a href="#ch8">
+        <span class="num">08</span>
+        Python Data Tools and Thonny
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>10. Ubuntu, Recovery and Going Further</span>
-        <span class="dots"></span>
-        <strong>55</strong>
-    </div>
+    <li>
+      <a href="#ch9">
+        <span class="num">09</span>
+        Startup Automation with Termux:Widget
+      </a>
+    </li>
 
-    <h2>Reference Section</h2>
+    <li>
+      <a href="#ch10">
+        <span class="num">10</span>
+        Ubuntu, Storage, Camera and Real-World Limits
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>Command Reference</span>
-        <span class="dots"></span>
-        <strong>62</strong>
-    </div>
+    <li>
+      <a href="#resources">
+        <span class="num">APP</span>
+        Official Resources
+      </a>
+    </li>
 
-    <div class="toc-row">
-        <span>Official Resources</span>
-        <span class="dots"></span>
-        <strong>67</strong>
-    </div>
-
-    <div class="toc-row">
-        <span>Glossary</span>
-        <span class="dots"></span>
-        <strong>70</strong>
-    </div>
-
-    <div class="box tip">
-
-        <h3>Reading this book</h3>
-
-        <p>
-            Do not rush through the commands. At each stage, first
-            identify the prompt you are looking at. Then run the command.
-            Finally compare what you see with the expected result.
-        </p>
-
-    </div>
-
-    <div class="page-number">4</div>
+  </ol>
 
 </section>
 
@@ -1109,186 +1238,87 @@ a {
      CHAPTER 1
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch1">
 
-    <div class="chapter-number">01</div>
+  <div class="chapter-number">Chapter 01</div>
 
-    <div class="chapter-tag">CHAPTER ONE</div>
+  <h2 class="chapter-title">
+    The Idea: Why Build Linux on a Phone?
+  </h2>
 
-    <h1>Before We Begin</h1>
+  <p class="chapter-lead">
+    Before installing anything, understand what we are trying to build
+    and what the finished system can and cannot do.
+  </p>
 
+  <h3>The problem comes first</h3>
+
+  <p>
+    A laptop is useful because it gives us a large screen, a keyboard,
+    desktop applications, a filesystem and the freedom to install
+    development tools.
+  </p>
+
+  <p>
+    But there are situations where the laptop is unavailable.
+  </p>
+
+  <p>
+    In that situation, an Android phone may already have enough hardware
+    to perform some of the work, but Android does not normally present
+    itself like a Linux desktop computer.
+  </p>
+
+  <p>
+    This project explores what happens when we add the missing pieces.
+  </p>
+
+  <h3>What are we building?</h3>
+
+  <div class="architecture">
+
+    <div class="arch-box">Android</div>
+    <div class="arch-arrow">↓</div>
+
+    <div class="arch-box main">Termux</div>
+    <div class="arch-arrow">↓</div>
+
+    <div class="arch-box">PRoot-Distro</div>
+    <div class="arch-arrow">↓</div>
+
+    <div class="arch-box">Debian</div>
+    <div class="arch-arrow">↓</div>
+
+    <div class="arch-box">XFCE</div>
+    <div class="arch-arrow">↓</div>
+
+    <div class="arch-box">Termux:X11</div>
+    <div class="arch-arrow">↓</div>
+
+    <div class="arch-box main">Linux Desktop</div>
+
+  </div>
+
+  <h3>Important: Linux is not replacing Android</h3>
+
+  <p>
+    Android remains the operating system underneath the whole setup.
+  </p>
+
+  <p>
+    Termux provides a Linux-like user environment.
+    PRoot-Distro provides isolated Linux environments such as Debian.
+    XFCE provides the desktop interface.
+    Termux:X11 provides the graphical display connection.
+  </p>
+
+  <div class="checkpoint">
+    <h3>Learning checkpoint</h3>
     <p>
-        What Termux actually is, what we are building, what Android
-        allows us to do, and the mental model that makes the rest of
-        the book easier.
+      If you understand that we are building Linux <em>inside</em>
+      Android rather than replacing Android, you are ready to begin.
     </p>
-
-</section>
-
-
-<section class="page">
-
-    <h1>1. Before We Begin</h1>
-
-    <p>
-        Before installing anything, I want to make one thing clear:
-        Termux is not simply another Android terminal emulator.
-        It gives Android a Linux-like command-line environment where
-        I can install packages and run many familiar Linux tools.
-    </p>
-
-    <p>
-        The desktop we eventually see is also not a normal Windows
-        or macOS desktop magically installed inside Android.
-        It is a Linux userspace running through Android, with an
-        X11 display server providing the graphical interface.
-    </p>
-
-    <div class="diagram">
-
-        <div class="node">ANDROID</div>
-        <div class="arrow">↓</div>
-
-        <div class="node">TERMUX</div>
-        <div class="arrow">↓</div>
-
-        <div class="node">PRoot-Distro</div>
-        <div class="arrow">↓</div>
-
-        <div class="node">DEBIAN / UBUNTU</div>
-        <div class="arrow">↓</div>
-
-        <div class="node">XFCE</div>
-        <div class="arrow">↓</div>
-
-        <div class="node">TERMUX:X11</div>
-
-    </div>
-
-    <h2>The prompts matter</h2>
-
-    <table>
-
-        <tr>
-            <th>Prompt</th>
-            <th>Where I am</th>
-        </tr>
-
-        <tr>
-            <td><code>$</code></td>
-            <td>Normal Termux shell</td>
-        </tr>
-
-        <tr>
-            <td><code>root@localhost:~#</code></td>
-            <td>Inside the Debian PRoot environment</td>
-        </tr>
-
-        <tr>
-            <td><code>&gt;&gt;&gt;</code></td>
-            <td>Inside Python</td>
-        </tr>
-
-    </table>
-
-    <div class="box warning">
-
-        <h3>Do not ignore the prompt</h3>
-
-        <p>
-            A large part of the confusion in Linux-on-Android setups
-            comes from running the correct command in the wrong
-            environment.
-        </p>
-
-    </div>
-
-</section>
-
-
-<section class="page">
-
-    <h1>Preparing Termux</h1>
-
-    <p>
-        I first installed Termux from F-Droid rather than relying on
-        an unrelated APK source.
-    </p>
-
-    <a class="resource-link"
-       href="https://f-droid.org/packages/com.termux/"
-       target="_blank">
-       Official Termux — F-Droid
-    </a>
-
-    <a class="resource-link"
-       href="https://github.com/termux/termux-app"
-       target="_blank">
-       Termux — Official GitHub
-    </a>
-
-    <p>
-        After installation, I opened Termux and updated the package
-        information.
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-head">
-            <span></span><span></span><span></span>
-            TERMUX
-            <button class="copy" onclick="copyCommand(this)">
-                Copy
-            </button>
-        </div>
-
-        <div class="terminal-body">
-<span class="command">$ pkg update</span>
-<span class="command">$ pkg upgrade -y</span>
-        </div>
-
-    </div>
-
-    <p>
-        The first command refreshes package information. The second
-        upgrades installed packages.
-    </p>
-
-    <h2>Background activity</h2>
-
-    <p>
-        Because I wanted the Linux desktop to remain alive for longer
-        sessions, I also had to pay attention to Android's battery
-        management.
-    </p>
-
-    <div class="box tip">
-
-        <h3>Important Android setting</h3>
-
-        <p>
-            Set Termux to allow unrestricted battery/background activity
-            where the device provides that option.
-        </p>
-
-        <p>
-            I also used:
-        </p>
-
-    </div>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ termux-wake-lock</span>
-        </div>
-
-    </div>
-
-    <p>
-        This helps prevent the phone from aggressively sleeping the
-        Termux process during long-running work.
-    </p>
+  </div>
 
 </section>
 
@@ -1297,150 +1327,252 @@ a {
      CHAPTER 2
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch2">
 
-    <div class="chapter-number">02</div>
+  <div class="chapter-number">Chapter 02</div>
 
-    <div class="chapter-tag">CHAPTER TWO</div>
+  <h2>Preparing Android and Installing Termux</h2>
 
-    <h1>Installing Termux and Termux:X11</h1>
+  <p class="chapter-lead">
+    We begin with the foundation. Do not rush into Debian yet.
+  </p>
 
-    <p>
-        This is where the phone begins moving from a normal Android
-        device toward the Linux desktop environment I wanted.
-    </p>
+  <h3>2.1 Install Termux</h3>
 
-</section>
+  <p>
+    Install Termux from a trusted source. The F-Droid distribution
+    is one established source for the application.
+  </p>
 
-
-<section class="page">
-
-    <h1>Installing the X11 Components</h1>
-
-    <p>
-        I installed the repositories and tools required for the rest
-        of the setup.
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-head">
-            TERMUX
-            <button class="copy" onclick="copyCommand(this)">
-                Copy
-            </button>
-        </div>
-
-        <div class="terminal-body">
-<span class="command">$ pkg install x11-repo proot-distro git wget curl -y</span>
-
-<span class="output">
-Installing required packages...
-Done.
-</span>
-
-<span class="command">$ pkg install termux-x11-nightly -y</span>
-        </div>
-
-    </div>
-
-    <h2>What each part means</h2>
-
-    <table>
-
-        <tr>
-            <th>Package</th>
-            <th>Purpose</th>
-        </tr>
-
-        <tr>
-            <td>x11-repo</td>
-            <td>Provides X11-related packages</td>
-        </tr>
-
-        <tr>
-            <td>proot-distro</td>
-            <td>Manages Linux distributions in Termux</td>
-        </tr>
-
-        <tr>
-            <td>git</td>
-            <td>Version-control tool</td>
-        </tr>
-
-        <tr>
-            <td>wget</td>
-            <td>Command-line downloader</td>
-        </tr>
-
-        <tr>
-            <td>curl</td>
-            <td>Command-line network utility</td>
-        </tr>
-
-    </table>
-
-    <a class="resource-link"
-       href="https://github.com/termux/termux-x11"
-       target="_blank">
-       Official Termux:X11 GitHub
+  <p>
+    Official source:
+    <a href="https://f-droid.org/packages/com.termux/" target="_blank">
+      Termux on F-Droid
     </a>
+  </p>
 
-    <a class="resource-link"
-       href="https://github.com/termux/termux-x11/releases/tag/nightly"
-       target="_blank">
-       Termux:X11 Nightly Releases
-    </a>
+  <div class="where">
+    <strong>WHERE ARE WE?</strong><br>
+    Android Settings / F-Droid → Termux.
+  </div>
 
-</section>
+  <p>
+    After installation, open Termux.
+  </p>
 
+  <div class="output">
+    <div class="output-title">You should see a shell prompt</div>
+    <pre>$</pre>
+  </div>
 
-<section class="page">
+  <p>
+    That dollar sign means we are currently working in Termux.
+  </p>
 
-    <h1>Starting X11</h1>
+  <h3>2.2 Update Termux</h3>
 
-    <p>
-        Termux:X11 is the graphical display side of the setup.
-        Installing it is not the same thing as starting it.
-    </p>
+  <div class="lesson">
 
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ termux-x11 :1 &amp;</span>
-        </div>
-
-    </div>
-
-    <p>
-        The <code>:1</code> identifies the X display we are going
-        to use.
-    </p>
+    <div class="lesson-number">Step 1</div>
 
     <p>
-        If X11 becomes stuck or needs to be restarted, I used:
+      First refresh the package information.
     </p>
 
-    <div class="terminal">
+    <div class="command-card">
 
-        <div class="terminal-body">
-<span class="command">$ pkill -f termux-x11</span>
-<span class="command">$ termux-x11 :1 &amp;</span>
-        </div>
+      <div class="command-head">
+        <span>Termux command</span>
+        <button class="copy-btn" data-copy="pkg update">
+          Copy command
+        </button>
+      </div>
 
-    </div>
+      <pre>pkg update</pre>
 
-    <div class="box info">
-
-        <h3>Why restart X11?</h3>
-
+      <div class="command-explain">
+        <strong>What does this mean?</strong>
         <p>
-            A graphical session can remain in a bad state even though
-            Termux itself is still running. Restarting the X11 server
-            gives the desktop a clean display target.
+          <code>pkg</code> is Termux's package manager.
+          <code>update</code> refreshes information about packages
+          available to Termux.
         </p>
+      </div>
 
     </div>
+
+  </div>
+
+  <div class="lesson">
+
+    <div class="lesson-number">Step 2</div>
+
+    <p>
+      Now upgrade installed packages where updates are available.
+    </p>
+
+    <div class="command-card">
+
+      <div class="command-head">
+        <span>Termux command</span>
+        <button class="copy-btn" data-copy="pkg upgrade">
+          Copy command
+        </button>
+      </div>
+
+      <pre>pkg upgrade</pre>
+
+      <div class="command-explain">
+        <strong>Why do this?</strong>
+        <p>
+          We want the Termux environment to be reasonably up to date
+          before installing the rest of the components.
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <h3>2.3 Install the basic tools</h3>
+
+  <p>
+    We need several packages before we can build the Linux environment.
+  </p>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="pkg install x11-repo proot-distro git wget curl -y">
+        Copy command
+      </button>
+    </div>
+
+    <pre>pkg install x11-repo proot-distro git wget curl -y</pre>
+
+    <div class="command-explain">
+
+      <p><strong>x11-repo</strong> — provides access to X11-related packages.</p>
+
+      <p><strong>proot-distro</strong> — manages Linux distribution environments.</p>
+
+      <p><strong>git</strong> — version-control software used by many development projects.</p>
+
+      <p><strong>wget</strong> — command-line downloading tool.</p>
+
+      <p><strong>curl</strong> — command-line network/data-transfer tool.</p>
+
+      <p>
+        <strong>-y</strong> — automatically answers yes to the installation
+        confirmation.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="success">
+    <strong>CHECKPOINT</strong>
+    <ul class="check-list">
+      <li>Termux is installed.</li>
+      <li>Termux packages are updated.</li>
+      <li>PRoot-Distro is installed.</li>
+      <li>The X11 repository is available.</li>
+    </ul>
+  </div>
+
+  <h3>2.4 Install Termux:X11</h3>
+
+  <p>
+    Termux:X11 consists of an Android application and a Termux-side
+    package.
+  </p>
+
+  <p>
+    Official project:
+    <a href="https://github.com/termux/termux-x11" target="_blank">
+      Termux:X11 on GitHub
+    </a>
+  </p>
+
+  <p>
+    Install the Android application first.
+  </p>
+
+  <p>
+    Then return to Termux.
+  </p>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="pkg install termux-x11-nightly -y">
+        Copy command
+      </button>
+    </div>
+
+    <pre>pkg install termux-x11-nightly -y</pre>
+
+    <div class="command-explain">
+      <p>
+        This installs the Termux-side component that works with the
+        Termux:X11 Android application.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>2.5 Give Termux enough freedom to run</h3>
+
+  <p>
+    Android can restrict background activity to save battery.
+    A Linux desktop can have many processes running simultaneously.
+  </p>
+
+  <p>
+    Open Android Settings and look for the battery/background settings
+    for Termux.
+  </p>
+
+  <p>
+    If your device provides an <strong>Unrestricted</strong> battery
+    option, select it for Termux. Apply the appropriate setting to
+    Termux:X11 as well if available.
+  </p>
+
+  <h3>2.6 Hold a wake lock</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn" data-copy="termux-wake-lock">
+        Copy command
+      </button>
+    </div>
+
+    <pre>termux-wake-lock</pre>
+
+    <div class="command-explain">
+      <p>
+        This requests a wake lock so the device does not simply go to
+        sleep while Termux is expected to continue doing work.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="checkpoint">
+    <h3>Checkpoint</h3>
+    <p>
+      Do not continue until Termux:X11 is installed and Termux itself
+      opens normally.
+    </p>
+  </div>
 
 </section>
 
@@ -1449,133 +1581,194 @@ Done.
      CHAPTER 3
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch3">
 
-    <div class="chapter-number">03</div>
+  <div class="chapter-number">Chapter 03</div>
 
-    <div class="chapter-tag">CHAPTER THREE</div>
+  <h2>Termux:X11, Debian and XFCE</h2>
 
-    <h1>Debian, XFCE and the Linux Desktop</h1>
+  <p class="chapter-lead">
+    Now we create the Linux environment that will eventually become
+    our desktop.
+  </p>
+
+  <h3>3.1 Check available distributions</h3>
+
+  <div class="where">
+    <strong>WHERE ARE WE?</strong><br>
+    Termux. You should see <code>$</code>.
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn" data-copy="proot-distro list">
+        Copy command
+      </button>
+    </div>
+
+    <pre>proot-distro list</pre>
+
+    <div class="command-explain">
+      <p>
+        This displays the Linux distributions available through the
+        installed version of PRoot-Distro.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="tip">
+    <strong>Why check first?</strong>
+    <p>
+      Distribution aliases can change between software versions.
+      Checking the current list prevents us from assuming that a
+      particular alias must exist.
+    </p>
+  </div>
+
+  <h3>3.2 Install Debian</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="proot-distro install debian">
+        Copy command
+      </button>
+    </div>
+
+    <pre>proot-distro install debian</pre>
+
+    <div class="command-explain">
+      <p>
+        PRoot-Distro downloads and creates a Debian filesystem that
+        can be entered from Termux.
+      </p>
+
+      <p>
+        It does not replace Android.
+      </p>
+
+      <p>
+        It does not turn the phone into a dual-boot computer.
+      </p>
+
+      <p>
+        It gives us a separate Linux userspace inside Termux.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>3.3 Enter Debian</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="proot-distro login debian">
+        Copy command
+      </button>
+    </div>
+
+    <pre>proot-distro login debian</pre>
+
+    <div class="command-explain">
+      <p>
+        This enters the Debian environment.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="output">
+    <div class="output-title">Your prompt changes</div>
+    <pre>root@localhost:~#</pre>
+  </div>
+
+  <div class="where">
+    <strong>IMPORTANT:</strong>
+    <p>
+      We are now inside Debian. Commands intended for Termux should not
+      automatically be typed here.
+    </p>
+  </div>
+
+  <h3>3.4 Install XFCE</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn" data-copy="apt update">
+        Copy command
+      </button>
+    </div>
+
+    <pre>apt update</pre>
+
+    <div class="command-explain">
+      <p>
+        <code>apt</code> is Debian's package manager.
+        <code>update</code> refreshes Debian's package information.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="apt install xfce4 xfce4-terminal dbus-x11 -y">
+        Copy command
+      </button>
+    </div>
+
+    <pre>apt install xfce4 xfce4-terminal dbus-x11 -y</pre>
+
+    <div class="command-explain">
+
+      <p>
+        <code>xfce4</code> — the desktop environment.
+      </p>
+
+      <p>
+        <code>xfce4-terminal</code> — terminal application for XFCE.
+      </p>
+
+      <p>
+        <code>dbus-x11</code> — DBus support used by graphical sessions.
+      </p>
+
+      <p>
+        <code>-y</code> — automatically confirms installation prompts.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="checkpoint">
+    <h3>Checkpoint</h3>
+
+    <ul class="check-list">
+      <li>Debian installed.</li>
+      <li>Debian opens with <code>root@localhost:~#</code>.</li>
+      <li>XFCE is installed.</li>
+      <li>Termux:X11 is installed.</li>
+    </ul>
 
     <p>
-        The point where the command line becomes a graphical Linux
-        desktop.
+      We are now ready to connect the Linux desktop to the phone's
+      graphical display.
     </p>
-
-</section>
-
-
-<section class="page">
-
-    <h1>Installing Debian</h1>
-
-    <p>
-        I used PRoot-Distro to install Debian.
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ proot-distro install debian</span>
-
-<span class="command">$ proot-distro login debian</span>
-        </div>
-
-    </div>
-
-    <div class="checkpoint">
-
-        <div class="checkpoint-title">
-            CHECKPOINT — WHERE AM I?
-        </div>
-
-        <p>
-            At this point I should see something similar to:
-        </p>
-
-        <div class="terminal">
-
-            <div class="terminal-body">
-<span class="output">root@localhost:~#</span>
-            </div>
-
-        </div>
-
-        <p>
-            That means I am inside Debian, not normal Termux.
-        </p>
-
-    </div>
-
-    <h2>Install XFCE</h2>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# apt update</span>
-
-<span class="command">root@localhost:~# apt install xfce4 xfce4-terminal dbus-x11 -y</span>
-        </div>
-
-    </div>
-
-    <p>
-        XFCE provides the graphical desktop environment. DBus helps
-        desktop applications communicate with one another.
-    </p>
-
-</section>
-
-
-<section class="page">
-
-    <h1>Connecting Debian to X11</h1>
-
-    <p>
-        I exited and re-entered Debian with the shared temporary
-        directory because Termux:X11 and the PRoot environment need
-        to be able to see the same X11 socket.
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ proot-distro login debian --shared-tmp</span>
-
-<span class="command">root@localhost:~# export DISPLAY=:1</span>
-
-<span class="command">root@localhost:~# xdpyinfo &gt;/dev/null &amp;&amp; echo "X11 CONNECTION OK"</span>
-
-<span class="output">X11 CONNECTION OK</span>
-        </div>
-
-    </div>
-
-    <p>
-        That last line was an important checkpoint for me.
-        It confirmed that Debian could communicate with the X11 display.
-    </p>
-
-    <h2>Starting XFCE</h2>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# dbus-launch --exit-with-session startxfce4</span>
-        </div>
-
-    </div>
-
-    <div class="success box">
-
-        <h3>What success looks like</h3>
-
-        <p>
-            The XFCE desktop appears with items such as the Applications
-            menu, desktop icons, panels, a clock and a mouse pointer.
-        </p>
-
-    </div>
+  </div>
 
 </section>
 
@@ -1584,151 +1777,229 @@ Done.
      CHAPTER 4
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch4">
 
-    <div class="chapter-number">04</div>
+  <div class="chapter-number">Chapter 04</div>
 
-    <div class="chapter-tag">CHAPTER FOUR</div>
+  <h2>Making the Linux Desktop Appear</h2>
 
-    <h1>Firefox and the Signal 9 Problem</h1>
+  <p class="chapter-lead">
+    This is where the pieces finally connect.
+  </p>
 
-    <p>
-        Firefox became my first serious graphical application test.
-        Then Android showed me a problem that had nothing to do with
-        Firefox itself.
-    </p>
+  <h3>4.1 Leave Debian temporarily</h3>
 
-</section>
+  <div class="where">
+    <strong>WHERE ARE WE?</strong><br>
+    We need to return to Termux before starting Termux:X11.
+  </div>
 
+  <div class="command-card">
 
-<section class="page">
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn" data-copy="exit">
+        Copy command
+      </button>
+    </div>
 
-    <h1>Firefox: My First GUI Test</h1>
+    <pre>exit</pre>
 
-    <p>
-        Once the XFCE desktop appeared, I wanted a real application
-        rather than simply looking at the desktop.
-    </p>
+    <div class="command-explain">
+      <p>
+        <code>exit</code> leaves the current shell.
+        Here it takes us from Debian back to Termux.
+      </p>
+    </div>
 
-    <p>
-        I installed Firefox ESR from Debian.
-    </p>
+  </div>
 
-    <div class="terminal">
+  <h3>4.2 Start Termux:X11</h3>
 
-        <div class="terminal-body">
-<span class="command">root@localhost:~# apt install firefox-esr -y</span>
+  <div class="command-card">
 
-<span class="command">root@localhost:~# firefox-esr</span>
-        </div>
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="termux-x11 :1 &">
+        Copy command
+      </button>
+    </div>
+
+    <pre>termux-x11 :1 &amp;</pre>
+
+    <div class="command-explain">
+
+      <p>
+        <code>termux-x11</code> starts the X11 server.
+      </p>
+
+      <p>
+        <code>:1</code> identifies the display number.
+      </p>
+
+      <p>
+        <code>&amp;</code> allows the command to run in the background.
+      </p>
 
     </div>
 
-    <p>
-        Firefox ESR became my first major confirmation that the
-        graphical environment was doing something useful.
-    </p>
+  </div>
 
-    <div class="checkpoint">
+  <p>
+    Now open the Termux:X11 Android application.
+  </p>
 
-        <div class="checkpoint-title">
-            FIRST MAJOR DESKTOP CHECKPOINT
-        </div>
+  <h3>4.3 Enter Debian with shared temporary storage</h3>
 
-        <p>
-            Android → Termux → Debian → X11 → XFCE → Firefox.
-        </p>
+  <div class="command-card">
 
-        <p>
-            At this stage I had something that genuinely looked and
-            behaved like a Linux desktop running on my Android phone.
-        </p>
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="proot-distro login debian --shared-tmp">
+        Copy command
+      </button>
+    </div>
+
+    <pre>proot-distro login debian --shared-tmp</pre>
+
+    <div class="command-explain">
+
+      <p>
+        <code>--shared-tmp</code> allows the PRoot environment to share
+        the temporary directory with the Termux environment.
+      </p>
+
+      <p>
+        This is important for applications that need to communicate
+        through temporary sockets, including the X11 connection.
+      </p>
 
     </div>
 
-</section>
+  </div>
 
+  <h3>4.4 Tell Debian which display to use</h3>
 
-<section class="page">
+  <div class="command-card">
 
-    <h1>The Problem: Signal 9</h1>
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="export DISPLAY=:1">
+        Copy command
+      </button>
+    </div>
 
-    <div class="error box">
+    <pre>export DISPLAY=:1</pre>
 
-        <h3>THE ERROR I ACTUALLY ENCOUNTERED</h3>
+    <div class="command-explain">
+      <p>
+        <code>DISPLAY</code> is an environment variable used by
+        graphical Linux applications to know where to send their
+        windows.
+      </p>
 
-        <div class="terminal">
+      <p>
+        We are telling Debian to use display <code>:1</code>.
+      </p>
+    </div>
 
-            <div class="terminal-body">
-<span class="output">Process completed (signal 9)</span>
-            </div>
+  </div>
 
-        </div>
+  <h3>4.5 Test the connection</h3>
 
-        <p>
-            The desktop or its processes could suddenly disappear.
-        </p>
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy='xdpyinfo >/dev/null && echo "X11 CONNECTION OK"'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>xdpyinfo &gt;/dev/null &amp;&amp; echo "X11 CONNECTION OK"</pre>
+
+    <div class="command-explain">
+
+      <p>
+        <code>xdpyinfo</code> asks the X11 server for display information.
+      </p>
+
+      <p>
+        <code>&gt;/dev/null</code> hides the detailed output.
+      </p>
+
+      <p>
+        <code>&amp;&amp;</code> means the next command runs only if the
+        first command succeeds.
+      </p>
+
+      <p>
+        <code>echo</code> prints our simple success message.
+      </p>
 
     </div>
 
-    <p>
-        At first, it would be easy to assume that Debian, XFCE or
-        Firefox was broken. That was not the real issue.
-    </p>
+  </div>
 
-    <p>
-        Android has process-management mechanisms that can terminate
-        phantom or cached processes. In this setup, that could kill
-        Linux desktop processes.
-    </p>
+  <div class="output">
+    <div class="output-title">Expected output</div>
+    <pre>X11 CONNECTION OK</pre>
+  </div>
 
-    <p>
-        This was one of the most important lessons of the entire
-        project: sometimes the Linux environment is working, but
-        Android decides that the process should not continue.
-    </p>
+  <div class="success">
+    <strong>If you see “X11 CONNECTION OK”, stop and celebrate this checkpoint.</strong>
+    The Linux environment can communicate with the graphical display.
+  </div>
 
-    <h2>The fix</h2>
+  <h3>4.6 Start XFCE</h3>
 
-    <p>
-        I used Android Wireless Debugging and ADB to change the
-        relevant process-management configuration.
-    </p>
+  <div class="command-card">
 
-    <div class="terminal">
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="dbus-launch --exit-with-session startxfce4">
+        Copy command
+      </button>
+    </div>
 
-        <div class="terminal-body">
-<span class="command">adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"</span>
+    <pre>dbus-launch --exit-with-session startxfce4</pre>
 
-<span class="command">adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"</span>
-        </div>
+    <div class="command-explain">
+
+      <p>
+        <code>dbus-launch</code> creates the DBus session used by the
+        graphical desktop.
+      </p>
+
+      <p>
+        <code>--exit-with-session</code> ties the DBus session to the
+        desktop session.
+      </p>
+
+      <p>
+        <code>startxfce4</code> starts XFCE.
+      </p>
 
     </div>
 
-    <h2>Verification</h2>
+  </div>
 
-    <div class="terminal">
+  <div class="checkpoint">
+    <h3>Desktop checkpoint</h3>
+    <p>
+      XFCE should now appear on the phone.
+    </p>
 
-        <div class="terminal-body">
-<span class="command">adb shell "/system/bin/device_config get activity_manager max_phantom_processes"</span>
-
-<span class="output">2147483647</span>
-        </div>
-
-    </div>
-
-    <div class="success box">
-
-        <h3>Stable desktop checkpoint</h3>
-
-        <p>
-            After this fix I was able to continue using the desktop
-            without the earlier repeated signal 9 crashing problem.
-            This became the stable foundation for the later audio,
-            LibreOffice, Python and automation work.
-        </p>
-
-    </div>
+    <p>
+      You should see a panel, desktop area, applications menu and
+      other normal desktop components.
+    </p>
+  </div>
 
 </section>
 
@@ -1737,161 +2008,94 @@ Done.
      CHAPTER 5
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch5">
 
-    <div class="chapter-number">05</div>
+  <div class="chapter-number">Chapter 05</div>
 
-    <div class="chapter-tag">CHAPTER FIVE</div>
+  <h2>Firefox: The First Real GUI Test</h2>
 
-    <h1>ADB and Wireless Debugging</h1>
+  <p class="chapter-lead">
+    A desktop is much more convincing when it can actually run
+    a real graphical application.
+  </p>
 
-    <p>
-        The tool that allowed Android itself to become part of the
-        troubleshooting process.
-    </p>
+  <h3>5.1 Why Firefox?</h3>
 
-</section>
+  <p>
+    We could install many applications at this point, but Firefox
+    provides a useful test.
+  </p>
 
+  <p>
+    If Firefox can open and display a website, several important
+    parts of our graphical setup are working together:
+  </p>
 
-<section class="page">
+  <ul>
+    <li>XFCE</li>
+    <li>X11</li>
+    <li>Linux graphics</li>
+    <li>window management</li>
+    <li>input</li>
+    <li>network access</li>
+  </ul>
 
-    <h1>My ADB Problem</h1>
+  <h3>5.2 Install Firefox ESR</h3>
 
-    <p>
-        ADB did not immediately work perfectly in Termux.
-        One of the errors I encountered was:
-    </p>
+  <div class="where">
+    <strong>WHERE ARE WE?</strong><br>
+    Debian. You should see <code>root@localhost:~#</code>.
+  </div>
 
-    <div class="error box">
+  <div class="command-card">
 
-        <h3>ADB LINKER ERROR</h3>
-
-        <div class="terminal">
-
-            <div class="terminal-body">
-<span class="output">CANNOT LINK EXECUTABLE "adb": cannot locate symbol "_ZNSt6__ndk113__hash_memoryEPKvm"</span>
-            </div>
-
-        </div>
-
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="apt install firefox-esr -y">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        Before guessing, I checked which package owned the executable.
-    </p>
+    <pre>apt install firefox-esr -y</pre>
 
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ dpkg -S /data/data/com.termux/files/usr/bin/adb</span>
-
-<span class="output">
-android-tools: /data/data/com.termux/files/usr/bin/adb
-</span>
-        </div>
-
+    <div class="command-explain">
+      <p>
+        This installs the Firefox Extended Support Release package
+        available to the Debian environment.
+      </p>
     </div>
 
-    <p>
-        The executable belonged to the Android tools package, so I
-        reinstalled that package.
-    </p>
+  </div>
 
-    <div class="terminal">
+  <h3>5.3 Launch Firefox</h3>
 
-        <div class="terminal-body">
-<span class="command">$ pkg reinstall android-tools</span>
-        </div>
+  <div class="command-card">
 
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn" data-copy="firefox-esr">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        I then encountered another daemon-related message:
-    </p>
+    <pre>firefox-esr</pre>
 
-    <div class="error box">
-
-        <div class="terminal">
-
-            <div class="terminal-body">
-<span class="output">cannot connect to daemon at tcp:5037: Connection refused</span>
-            </div>
-
-        </div>
-
+    <div class="command-explain">
+      <p>
+        This starts Firefox from the Debian environment.
+      </p>
     </div>
 
+  </div>
+
+  <div class="success">
+    <strong>What this proves:</strong>
     <p>
-        This was a connection/daemon problem rather than proof that
-        ADB itself could never work.
+      If Firefox opens, the graphical Linux environment is doing
+      real work rather than merely displaying an empty desktop.
     </p>
-
-</section>
-
-
-<section class="page">
-
-    <h1>Wireless Debugging</h1>
-
-    <p>
-        On the Android phone I enabled:
-    </p>
-
-    <ul>
-        <li>Developer Options</li>
-        <li>Wireless Debugging</li>
-    </ul>
-
-    <p>
-        Android displays the actual IP address, pairing port,
-        connection port and pairing code. I used the values shown
-        by the phone rather than inventing them.
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ adb pair IP_ADDRESS:PAIRING_PORT</span>
-
-<span class="command">$ adb connect IP_ADDRESS:PORT</span>
-
-<span class="command">$ adb devices</span>
-        </div>
-
-    </div>
-
-    <div class="box warning">
-
-        <h3>Do not copy example addresses</h3>
-
-        <p>
-            Replace the placeholders with the values displayed by
-            your own Android device.
-        </p>
-
-    </div>
-
-    <p>
-        During pairing I also encountered:
-    </p>
-
-    <div class="error box">
-
-        <div class="terminal">
-
-            <div class="terminal-body">
-<span class="output">protocol fault (couldn't read status message): Success</span>
-            </div>
-
-        </div>
-
-    </div>
-
-    <p>
-        I treated this as a pairing/connection hiccup. I checked
-        Wireless Debugging again, retried the pairing and then
-        verified the device with <code>adb devices</code>.
-    </p>
+  </div>
 
 </section>
 
@@ -1900,119 +2104,349 @@ android-tools: /data/data/com.termux/files/usr/bin/adb
      CHAPTER 6
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch6">
 
-    <div class="chapter-number">06</div>
+  <div class="chapter-number">Chapter 06</div>
 
-    <div class="chapter-tag">CHAPTER SIX</div>
+  <h2>Understanding and Fixing Signal 9</h2>
 
-    <h1>Audio and PulseAudio</h1>
+  <p class="chapter-lead">
+    This is one of the most important lessons in the entire setup:
+    when Android kills a Linux process, understand the cause before
+    applying the fix.
+  </p>
 
-    <p>
-        A desktop is much more useful when the applications can use
-        the phone's speaker.
-    </p>
+  <div class="error">
+Process completed (signal 9)
+  </div>
 
-</section>
+  <h3>6.1 What does signal 9 mean?</h3>
 
+  <p>
+    Signal 9 is a forceful process termination signal.
+  </p>
 
-<section class="page">
+  <p>
+    In this setup, Android's process management can be an important
+    cause of the Linux desktop or one of its processes being killed.
+  </p>
 
-    <h1>Installing PulseAudio</h1>
+  <div class="warning">
+    <strong>Do not conclude that Debian is broken just because this message appears.</strong>
+    The problem can be outside Debian itself.
+  </div>
 
-    <p>
-        After the desktop was stable, I moved on to audio.
-    </p>
+  <h3>6.2 Why ADB?</h3>
 
-    <div class="terminal">
+  <p>
+    The setting we need to change is an Android system-level setting.
+    Termux does not automatically have permission to change every
+    Android system configuration.
+  </p>
 
-        <div class="terminal-body">
-<span class="command">$ pkg install pulseaudio -y</span>
-        </div>
+  <p>
+    Android Debug Bridge, or ADB, gives us a way to communicate with
+    Android's debugging interface.
+  </p>
+
+  <p>
+    On a modern Android phone, Wireless Debugging can allow this
+    communication without connecting a computer.
+  </p>
+
+  <h3>6.3 First make sure ADB itself works</h3>
+
+  <p>
+    ADB may produce its own problem before we even reach Wireless
+    Debugging.
+  </p>
+
+  <div class="error">
+CANNOT LINK EXECUTABLE "adb":
+cannot locate symbol
+"_ZNSt6__ndk113__hash_memoryEPKvm"
+  </div>
+
+  <p>
+    If you see this, stop. Fix ADB first.
+  </p>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="dpkg -S $(command -v adb)">
+        Copy command
+      </button>
+    </div>
+
+    <pre>dpkg -S $(command -v adb)</pre>
+
+    <div class="command-explain">
+
+      <p>
+        <code>command -v adb</code> finds the ADB executable.
+      </p>
+
+      <p>
+        <code>dpkg -S</code> asks which installed Debian/Termux package
+        owns that file.
+      </p>
+
+      <p>
+        We use this to confirm that the executable belongs to the
+        <code>android-tools</code> package.
+      </p>
 
     </div>
 
-    <p>
-        I adjusted the PulseAudio configuration:
-    </p>
+  </div>
 
-    <div class="terminal">
+  <h3>6.4 Reinstall Android Tools</h3>
 
-        <div class="terminal-body">
-<span class="command">$ sed -i 's/module-sles-sink/module-aaudio-sink/g' $PREFIX/etc/pulse/default.pa</span>
-        </div>
+  <div class="command-card">
 
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="pkg reinstall android-tools">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        Then I started PulseAudio with a local TCP connection:
-    </p>
+    <pre>pkg reinstall android-tools</pre>
 
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1</span>
-
-<span class="command">$ pactl load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1</span>
-
-<span class="output">18</span>
-        </div>
-
+    <div class="command-explain">
+      <p>
+        This downloads and reinstalls the Android Tools package,
+        including ADB.
+      </p>
     </div>
 
-    <p>
-        The number <code>18</code> was a module ID returned by
-        PulseAudio. It was not an error.
-    </p>
+  </div>
 
-</section>
+  <h3>6.5 Test ADB</h3>
 
+  <div class="command-card">
 
-<section class="page">
-
-    <h1>Checking the Audio Server</h1>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ pactl info | grep -E "Server Name|Default Sink"</span>
-
-<span class="output">Server Name: pulseaudio</span>
-<span class="output">Default Sink: AAudio_sink</span>
-        </div>
-
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="adb version">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        Inside Debian I used:
-    </p>
+    <pre>adb version</pre>
 
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# export PULSE_SERVER=127.0.0.1</span>
-        </div>
-
+    <div class="command-explain">
+      <p>
+        We are asking ADB to report its version.
+        If ADB responds normally, we can continue to Wireless Debugging.
+      </p>
     </div>
 
-    <p>
-        The address <code>127.0.0.1</code> means the local machine —
-        in this case, the same Android phone.
-    </p>
+  </div>
 
-    <div class="checkpoint">
+  <h3>6.6 Enable Wireless Debugging</h3>
 
-        <div class="checkpoint-title">
-            AUDIO CHECKPOINT
-        </div>
+  <p>
+    Open:
+  </p>
 
-        <p>
-            Firefox was launched with the PulseAudio environment
-            available, and YouTube audio played through the phone's
-            speaker.
-        </p>
+  <p>
+    <strong>Android Settings → Developer Options → Wireless Debugging</strong>
+  </p>
 
+  <p>
+    Turn Wireless Debugging on.
+  </p>
+
+  <div class="warning">
+    <strong>Never copy the IP address and port from another person's phone.</strong>
+    Use the exact values displayed by your own phone.
+  </div>
+
+  <h3>6.7 Pair ADB</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="adb pair IP_ADDRESS:PAIRING_PORT">
+        Copy command
+      </button>
     </div>
+
+    <pre>adb pair IP_ADDRESS:PAIRING_PORT</pre>
+
+    <div class="command-explain">
+      <p>
+        Replace the placeholders with the IP address and pairing port
+        shown by your Android Wireless Debugging screen.
+      </p>
+    </div>
+
+  </div>
+
+  <p>
+    Android will ask for the pairing code shown on the phone.
+  </p>
+
+  <h3>6.8 Connect</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="adb connect IP_ADDRESS:PORT">
+        Copy command
+      </button>
+    </div>
+
+    <pre>adb connect IP_ADDRESS:PORT</pre>
+
+    <div class="command-explain">
+      <p>
+        This connects ADB to the device using the connection address
+        displayed by Wireless Debugging.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>6.9 Verify the connection</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="adb devices">
+        Copy command
+      </button>
+    </div>
+
+    <pre>adb devices</pre>
+
+    <div class="command-explain">
+      <p>
+        This lists devices currently connected to ADB.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>6.10 If pairing reports a protocol fault</h3>
+
+  <div class="error">
+protocol fault (couldn't read status message): Success
+  </div>
+
+  <p>
+    This does not automatically mean the phone is damaged.
+  </p>
+
+  <p>
+    Check that:
+  </p>
+
+  <ul>
+    <li>Wireless Debugging is still enabled.</li>
+    <li>You are using the current pairing information.</li>
+    <li>The pairing port is correct.</li>
+    <li>You have not accidentally used the connection port as the pairing port.</li>
+  </ul>
+
+  <p>
+    Retry the pairing process, then use <code>adb devices</code> after
+    connecting.
+  </p>
+
+  <h3>6.11 Change the phantom-process setting</h3>
+
+  <p>
+    Once ADB is connected, run the following commands one at a time.
+  </p>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>ADB command</span>
+      <button class="copy-btn"
+              data-copy='adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>adb shell "/system/bin/device_config set_sync_disabled_for_tests persistent"</pre>
+
+    <div class="command-explain">
+      <p>
+        This sets the DeviceConfig synchronization mode needed for
+        the configuration change that follows.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>ADB command</span>
+      <button class="copy-btn"
+              data-copy='adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>adb shell "/system/bin/device_config put activity_manager max_phantom_processes 2147483647"</pre>
+
+    <div class="command-explain">
+      <p>
+        This changes the Activity Manager's phantom-process limit to
+        a very high value.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>6.12 Verify the setting</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>ADB command</span>
+      <button class="copy-btn"
+              data-copy='adb shell "/system/bin/device_config get activity_manager max_phantom_processes"'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>adb shell "/system/bin/device_config get activity_manager max_phantom_processes"</pre>
+
+    <div class="command-explain">
+      <p>
+        This reads the setting back from Android.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="output">
+    <div class="output-title">Expected verification</div>
+    <pre>2147483647</pre>
+  </div>
+
+  <div class="success">
+    <strong>The important lesson:</strong>
+    We did not treat the fix as magic. We identified the problem,
+    repaired ADB, established a connection, changed the Android
+    configuration and then verified the result.
+  </div>
 
 </section>
 
@@ -2021,71 +2455,280 @@ android-tools: /data/data/com.termux/files/usr/bin/adb
      CHAPTER 7
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch7">
 
-    <div class="chapter-number">07</div>
+  <div class="chapter-number">Chapter 07</div>
 
-    <div class="chapter-tag">CHAPTER SEVEN</div>
+  <h2>Audio, LibreOffice and Python</h2>
 
-    <h1>LibreOffice and Productivity</h1>
+  <p class="chapter-lead">
+    A desktop becomes much more useful when it can play sound,
+    handle documents and run programming tools.
+  </p>
 
-    <p>
-        The next question was simple: could the phone now do normal
-        office work?
-    </p>
+  <h3>7.1 Install PulseAudio in Termux</h3>
 
-</section>
+  <div class="where">
+    <strong>WHERE ARE WE?</strong><br>
+    For the following command, return to Termux.
+  </div>
 
+  <div class="command-card">
 
-<section class="page">
-
-    <h1>Installing LibreOffice</h1>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# apt update</span>
-
-<span class="command">root@localhost:~# apt install libreoffice -y</span>
-        </div>
-
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="pkg install pulseaudio -y">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        The installation produced some delayed-item warnings during
-        the process, but the installation completed.
-    </p>
+    <pre>pkg install pulseaudio -y</pre>
 
-    <p>
-        I checked it rather than assuming it worked.
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# dpkg --audit</span>
-
-<span class="command">root@localhost:~# libreoffice --version</span>
-
-<span class="output">LibreOffice 25.2.3.2 520(Build:2)</span>
-        </div>
-
+    <div class="command-explain">
+      <p>
+        This installs the PulseAudio server in Termux.
+      </p>
     </div>
 
-    <div class="success box">
+  </div>
 
-        <h3>Verification</h3>
+  <h3>7.2 Adjust the PulseAudio configuration</h3>
 
-        <p>
-            <code>dpkg --audit</code> produced no output, and LibreOffice
-            reported its installed version.
-        </p>
+  <div class="command-card">
 
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="sed -i 's/module-sles-sink/module-aaudio-sink/g' $PREFIX/etc/pulse/default.pa">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        Calc could open spreadsheet formats such as XLSX, XLS and CSV.
-    </p>
+    <pre>sed -i 's/module-sles-sink/module-aaudio-sink/g' $PREFIX/etc/pulse/default.pa</pre>
+
+    <div class="command-explain">
+      <p>
+        <code>sed</code> edits text files from the command line.
+        Here it changes the configured audio sink module.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>7.3 Start PulseAudio</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy='pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1</pre>
+
+  </div>
+
+  <h3>7.4 Load the network protocol</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="pactl load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1">
+        Copy command
+      </button>
+    </div>
+
+    <pre>pactl load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1</pre>
+
+    <div class="command-explain">
+      <p>
+        A returned number such as <code>18</code> is a module identifier,
+        not automatically an error.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>7.5 Check the audio server</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy='pactl info | grep -E "Server Name|Default Sink"'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>pactl info | grep -E "Server Name|Default Sink"</pre>
+
+  </div>
+
+  <div class="output">
+    <div class="output-title">Example working output</div>
+    <pre>Server Name: pulseaudio
+Default Sink: AAudio_sink</pre>
+  </div>
+
+  <h3>7.6 Tell Debian where the audio server is</h3>
+
+  <div class="where">
+    <strong>Return to Debian.</strong>
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="export PULSE_SERVER=127.0.0.1">
+        Copy command
+      </button>
+    </div>
+
+    <pre>export PULSE_SERVER=127.0.0.1</pre>
+
+    <div class="command-explain">
+      <p>
+        <code>127.0.0.1</code> means the local device.
+        We are telling Debian applications to use the PulseAudio
+        server running on the same phone.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>7.7 LibreOffice</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn" data-copy="apt update">
+        Copy command
+      </button>
+    </div>
+
+    <pre>apt update</pre>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="apt install libreoffice -y">
+        Copy command
+      </button>
+    </div>
+
+    <pre>apt install libreoffice -y</pre>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="libreoffice --version">
+        Copy command
+      </button>
+    </div>
+
+    <pre>libreoffice --version</pre>
+
+    <div class="command-explain">
+      <p>
+        This verifies that LibreOffice is installed and executable.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>7.8 Python</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="python3 --version">
+        Copy command
+      </button>
+    </div>
+
+    <pre>python3 --version</pre>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="python3">
+        Copy command
+      </button>
+    </div>
+
+    <pre>python3</pre>
+
+  </div>
+
+  <p>
+    The prompt should change to:
+  </p>
+
+  <div class="output">
+    <pre>&gt;&gt;&gt;</pre>
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Python command</span>
+      <button class="copy-btn"
+              data-copy='print("Hello, Polycarp!")'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>print("Hello, Polycarp!")</pre>
+
+  </div>
+
+  <div class="output">
+    <div class="output-title">Expected output</div>
+    <pre>Hello, Polycarp!</pre>
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Python command</span>
+      <button class="copy-btn" data-copy="exit()">
+        Copy command
+      </button>
+    </div>
+
+    <pre>exit()</pre>
+
+    <div class="command-explain">
+      <p>
+        This leaves the Python interpreter and returns to the Debian shell.
+      </p>
+    </div>
+
+  </div>
 
 </section>
 
@@ -2094,150 +2737,196 @@ android-tools: /data/data/com.termux/files/usr/bin/adb
      CHAPTER 8
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch8">
 
-    <div class="chapter-number">08</div>
+  <div class="chapter-number">Chapter 08</div>
 
-    <div class="chapter-tag">CHAPTER EIGHT</div>
+  <h2>Python Data Tools and Thonny</h2>
 
-    <h1>Python, pip, venv and Thonny</h1>
+  <h3>8.1 The pip3 problem</h3>
 
+  <p>
+    One of the most useful lessons in a multi-environment setup is
+    learning to check which Python installation a command is using.
+  </p>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn" data-copy="pip3 --version">
+        Copy command
+      </button>
+    </div>
+
+    <pre>pip3 --version</pre>
+
+    <div class="command-explain">
+      <p>
+        If this points to a Python installation under the Termux
+        filesystem rather than Debian, do not use it for our Debian
+        data environment.
+      </p>
+    </div>
+
+  </div>
+
+  <p>
+    Instead, explicitly ask Debian's Python interpreter to run pip.
+  </p>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="python3 -m pip --version">
+        Copy command
+      </button>
+    </div>
+
+    <pre>python3 -m pip --version</pre>
+
+    <div class="command-explain">
+      <p>
+        The important part is <code>python3 -m pip</code>.
+        It ties pip to the Python interpreter we explicitly selected.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>8.2 Install virtual-environment support</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="apt install python3-venv -y">
+        Copy command
+      </button>
+    </div>
+
+    <pre>apt install python3-venv -y</pre>
+
+  </div>
+
+  <h3>8.3 Create a data environment</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="python3 -m venv ~/data">
+        Copy command
+      </button>
+    </div>
+
+    <pre>python3 -m venv ~/data</pre>
+
+    <div class="command-explain">
+      <p>
+        This creates a Python virtual environment named
+        <code>data</code> in your home directory.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>8.4 Activate the environment</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="source ~/data/bin/activate">
+        Copy command
+      </button>
+    </div>
+
+    <pre>source ~/data/bin/activate</pre>
+
+  </div>
+
+  <div class="output">
+    <div class="output-title">Prompt change</div>
+    <pre>(data) root@localhost:~#</pre>
+  </div>
+
+  <p>
+    The <code>(data)</code> tells us the virtual environment is active.
+  </p>
+
+  <h3>8.5 Install NumPy, pandas and Matplotlib</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Python environment command</span>
+      <button class="copy-btn"
+              data-copy="python3 -m pip install numpy pandas matplotlib">
+        Copy command
+      </button>
+    </div>
+
+    <pre>python3 -m pip install numpy pandas matplotlib</pre>
+
+    <div class="command-explain">
+      <p>
+        <strong>NumPy</strong> provides numerical computing tools.
+      </p>
+
+      <p>
+        <strong>pandas</strong> provides tools for structured and tabular data.
+      </p>
+
+      <p>
+        <strong>Matplotlib</strong> provides plotting and visualization.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>8.6 Install Thonny</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn"
+              data-copy="apt install thonny -y">
+        Copy command
+      </button>
+    </div>
+
+    <pre>apt install thonny -y</pre>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Debian command</span>
+      <button class="copy-btn" data-copy="thonny">
+        Copy command
+      </button>
+    </div>
+
+    <pre>thonny</pre>
+
+  </div>
+
+  <div class="tip">
+    <strong>Thonny interpreter</strong>
     <p>
-        Once the desktop could run normal applications, I started
-        turning it into a development and data-analysis environment.
+      If Thonny asks which Python interpreter to use, select
+      Local Python 3 and use <code>/usr/bin/python3</code>
+      when that option is available.
     </p>
-
-</section>
-
-
-<section class="page">
-
-    <h1>Python</h1>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# python3 --version</span>
-
-<span class="output">Python 3.13.5</span>
-
-<span class="command">root@localhost:~# python3</span>
-
-<span class="output">&gt;&gt;&gt; print("Hello, Polycarp!")</span>
-
-<span class="output">Hello, Polycarp!</span>
-
-<span class="output">&gt;&gt;&gt; exit()</span>
-
-<span class="output">root@localhost:~#</span>
-        </div>
-
-    </div>
-
-    <h2>The pip confusion</h2>
-
-    <p>
-        This was an important environment lesson.
-        Running <code>pip3</code> gave me Termux's Python installation:
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# pip3 --version</span>
-
-<span class="output">pip 26.2.1 from /data/data/com.termux/files/usr/lib/python3.14/site-packages/pip (python 3.14)</span>
-        </div>
-
-    </div>
-
-    <p>
-        That was not the Debian Python environment I was trying to use.
-    </p>
-
-    <p>
-        The safer approach inside Debian was:
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# python3 -m pip --version</span>
-
-<span class="output">pip 25.1.1 from /usr/lib/python3/dist-packages/pip (python 3.13)</span>
-        </div>
-
-    </div>
-
-    <div class="box tip">
-
-        <h3>My rule</h3>
-
-        <p>
-            Inside Debian, I use <code>python3 -m pip</code> when I
-            want to make absolutely sure pip belongs to the Python
-            interpreter I am using.
-        </p>
-
-    </div>
-
-</section>
-
-
-<section class="page">
-
-    <h1>Virtual Environment</h1>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# apt install python3-venv -y</span>
-
-<span class="command">root@localhost:~# python3 -m venv ~/data</span>
-
-<span class="command">root@localhost:~# source ~/data/bin/activate</span>
-
-<span class="output">(data) root@localhost:~#</span>
-        </div>
-
-    </div>
-
-    <p>
-        The <code>(data)</code> appearing before the prompt means
-        that the virtual environment is active.
-    </p>
-
-    <h2>Data packages</h2>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">(data) root@localhost:~# python3 -m pip install numpy pandas matplotlib</span>
-
-<span class="output">NumPy 2.5.3</span>
-<span class="output">pandas 3.0.6</span>
-<span class="output">Matplotlib 3.11.2</span>
-        </div>
-
-    </div>
-
-    <h2>Thonny</h2>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">root@localhost:~# apt install thonny -y</span>
-
-<span class="output">Thonny 4.1.7-1</span>
-        </div>
-
-    </div>
-
-    <p>
-        Thonny produced a SyntaxWarning involving an invalid escape
-        sequence in one of its Python files. It was a warning, not
-        an installation failure.
-    </p>
+  </div>
 
 </section>
 
@@ -2246,196 +2935,356 @@ android-tools: /data/data/com.termux/files/usr/bin/adb
      CHAPTER 9
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch9">
 
-    <div class="chapter-number">09</div>
+  <div class="chapter-number">Chapter 09</div>
 
-    <div class="chapter-tag">CHAPTER NINE</div>
+  <h2>Startup Automation with Termux:Widget</h2>
 
-    <h1>Automation, Termux:Widget and Android APIs</h1>
+  <p class="chapter-lead">
+    Once the desktop works, we should stop repeating the same long
+    sequence of commands manually.
+  </p>
 
-    <p>
-        At this point the phone was no longer just running Linux.
-        I started making the whole environment easier to start and
-        interact with.
-    </p>
+  <h3>9.1 The idea</h3>
 
-</section>
+  <p>
+    We will create one shell script.
+  </p>
 
+  <p>
+    The script will:
+  </p>
 
-<section class="page">
+  <ul>
+    <li>hold a wake lock,</li>
+    <li>start X11 when needed,</li>
+    <li>start PulseAudio,</li>
+    <li>load the audio connection,</li>
+    <li>enter Debian,</li>
+    <li>set the display,</li>
+    <li>set the audio server,</li>
+    <li>start XFCE.</li>
+  </ul>
 
-    <h1>My Startup Script</h1>
+  <h3>9.2 Create the script</h3>
 
-    <p>
-        Instead of manually starting every component, I created:
-    </p>
+  <p>
+    In Termux, create:
+  </p>
 
-    <div class="terminal">
+  <div class="output">
+    <pre>~/start-linux.sh</pre>
+  </div>
 
-        <div class="terminal-body">
-<span class="command">root@localhost:~# nano ~/start-linux.sh</span>
-        </div>
+  <h3>9.3 Understand the first line</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script line</span>
+      <button class="copy-btn"
+              data-copy="#!/data/data/com.termux/files/usr/bin/bash">
+        Copy command
+      </button>
+    </div>
+
+    <pre>#!/data/data/com.termux/files/usr/bin/bash</pre>
+
+    <div class="command-explain">
+      <p>
+        This tells Android/Termux which shell should interpret the script.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>9.4 Keep the session awake</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script line</span>
+      <button class="copy-btn"
+              data-copy="termux-wake-lock">
+        Copy command
+      </button>
+    </div>
+
+    <pre>termux-wake-lock</pre>
+
+  </div>
+
+  <h3>9.5 Start X11 only when needed</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script block</span>
+      <button class="copy-btn"
+              data-copy='if [ ! -S "$TMPDIR/.X11-unix/X1" ] && [ ! -S "/tmp/.X11-unix/X1" ]; then'>
+        Copy line
+      </button>
+    </div>
+
+    <pre>if [ ! -S "$TMPDIR/.X11-unix/X1" ] &amp;&amp; [ ! -S "/tmp/.X11-unix/X1" ]; then</pre>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script line</span>
+      <button class="copy-btn"
+              data-copy="    termux-x11 :1 &">
+        Copy command
+      </button>
+    </div>
+
+    <pre>    termux-x11 :1 &amp;</pre>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script line</span>
+      <button class="copy-btn"
+              data-copy="    sleep 3">
+        Copy command
+      </button>
+    </div>
+
+    <pre>    sleep 3</pre>
+
+    <div class="command-explain">
+      <p>
+        The script waits three seconds to give X11 time to start.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script line</span>
+      <button class="copy-btn" data-copy="fi">
+        Copy command
+      </button>
+    </div>
+
+    <pre>fi</pre>
+
+  </div>
+
+  <h3>9.6 Start PulseAudio</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script line</span>
+      <button class="copy-btn"
+              data-copy='pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>pulseaudio --start --load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" --exit-idle-time=-1</pre>
+
+  </div>
+
+  <h3>9.7 Load the PulseAudio connection</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script line</span>
+      <button class="copy-btn"
+              data-copy='pactl load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1 2>/dev/null'>
+        Copy command
+      </button>
+    </div>
+
+    <pre>pactl load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1 2&gt;/dev/null</pre>
+
+    <div class="command-explain">
+      <p>
+        <code>2&gt;/dev/null</code> redirects standard error output away.
+        This keeps harmless repeated-module messages from cluttering
+        the startup process.
+      </p>
+    </div>
+
+  </div>
+
+  <h3>9.8 Start Debian and XFCE</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Script line</span>
+      <button class="copy-btn"
+              data-copy="proot-distro login debian --shared-tmp -- bash -c 'export DISPLAY=:1; export PULSE_SERVER=127.0.0.1; dbus-launch --exit-with-session startxfce4' &">
+        Copy command
+      </button>
+    </div>
+
+    <pre>proot-distro login debian --shared-tmp -- bash -c 'export DISPLAY=:1; export PULSE_SERVER=127.0.0.1; dbus-launch --exit-with-session startxfce4' &amp;</pre>
+
+    <div class="command-explain">
+
+      <p>
+        <code>proot-distro login debian</code> enters Debian.
+      </p>
+
+      <p>
+        <code>--shared-tmp</code> keeps the temporary directory shared.
+      </p>
+
+      <p>
+        <code>bash -c</code> tells Debian to execute the quoted command.
+      </p>
+
+      <p>
+        <code>DISPLAY=:1</code> selects the X11 display.
+      </p>
+
+      <p>
+        <code>PULSE_SERVER=127.0.0.1</code> selects the local audio server.
+      </p>
+
+      <p>
+        <code>startxfce4</code> starts the desktop.
+      </p>
 
     </div>
 
-    <p>
-        The final script was:
-    </p>
+  </div>
 
-    <div class="terminal">
+  <h3>9.9 Make the script executable</h3>
 
-        <div class="terminal-body">
-#!/data/data/com.termux/files/usr/bin/bash
+  <div class="command-card">
 
-termux-wake-lock
-
-if [ ! -S "$TMPDIR/.X11-unix/X1" ] &amp;&amp; [ ! -S "/tmp/.X11-unix/X1" ]; then
-    termux-x11 :1 &amp;
-    sleep 3
-fi
-
-pulseaudio --start \
---load="module-native-protocol-tcp auth-ip-acl=127.0.0.1 auth-anonymous=1" \
---exit-idle-time=-1
-
-pactl load-module module-native-protocol-tcp \
-auth-ip-acl=127.0.0.1 auth-anonymous=1 2&gt;/dev/null
-
-proot-distro login debian --shared-tmp -- bash -c \
-'export DISPLAY=:1; export PULSE_SERVER=127.0.0.1; \
-dbus-launch --exit-with-session startxfce4' &amp;
-        </div>
-
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="chmod +x ~/start-linux.sh">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        I then made it executable:
-    </p>
+    <pre>chmod +x ~/start-linux.sh</pre>
 
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ chmod +x ~/start-linux.sh</span>
-
-<span class="command">$ ls -l ~/start-linux.sh</span>
-
-<span class="output">-rwx------ ... start-linux.sh</span>
-        </div>
-
+    <div class="command-explain">
+      <p>
+        <code>chmod +x</code> gives the file executable permission.
+      </p>
     </div>
 
-</section>
+  </div>
 
+  <h3>9.10 Check the permissions</h3>
 
-<section class="page">
+  <div class="command-card">
 
-    <h1>Termux:Widget</h1>
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="ls -l ~/start-linux.sh">
+        Copy command
+      </button>
+    </div>
 
+    <pre>ls -l ~/start-linux.sh</pre>
+
+  </div>
+
+  <h3>9.11 Test before automating</h3>
+
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="~/start-linux.sh">
+        Copy command
+      </button>
+    </div>
+
+    <pre>~/start-linux.sh</pre>
+
+  </div>
+
+  <div class="checkpoint">
+    <h3>Do not create the widget until the script works.</h3>
     <p>
-        I installed Termux:Widget and placed the startup script in
-        its shortcuts directory.
+      If the script itself fails, adding Termux:Widget will not fix it.
+      First make the script work manually.
     </p>
+  </div>
 
-    <a class="resource-link"
-       href="https://f-droid.org/packages/com.termux.widget/"
-       target="_blank">
-       Official Termux:Widget — F-Droid
+  <h3>9.12 Install Termux:Widget</h3>
+
+  <p>
+    Official source:
+    <a href="https://f-droid.org/packages/com.termux.widget/" target="_blank">
+      Termux:Widget on F-Droid
     </a>
+  </p>
 
-    <div class="terminal">
+  <h3>9.13 Create the shortcuts directory</h3>
 
-        <div class="terminal-body">
-<span class="command">$ mkdir -p ~/.shortcuts</span>
+  <div class="command-card">
 
-<span class="command">$ cp ~/start-linux.sh ~/.shortcuts/"Start Linux"</span>
-
-<span class="command">$ chmod +x ~/.shortcuts/"Start Linux"</span>
-        </div>
-
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="mkdir -p ~/.shortcuts">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        I then added the Termux:Widget shortcut to the Android home
-        screen.
-    </p>
+    <pre>mkdir -p ~/.shortcuts</pre>
 
-    <div class="checkpoint">
+  </div>
 
-        <div class="checkpoint-title">
-            AUTOMATION CHECKPOINT
-        </div>
+  <h3>9.14 Copy the startup script</h3>
 
-        <p>
-            I logged out of the desktop, exited Termux:X11 while
-            keeping Termux available, tapped <strong>Start Linux</strong>,
-            opened Termux:X11 and XFCE appeared again.
-        </p>
+  <div class="command-card">
 
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy='cp ~/start-linux.sh ~/.shortcuts/"Start Linux"'>
+        Copy command
+      </button>
     </div>
 
-    <div class="box warning">
+    <pre>cp ~/start-linux.sh ~/.shortcuts/"Start Linux"</pre>
 
-        <h3>Important limitation</h3>
+  </div>
 
-        <p>
-            I did not treat this as proof of cold-start reliability
-            when both Termux and Termux:X11 had been completely killed.
-        </p>
+  <h3>9.15 Make the shortcut executable</h3>
 
+  <div class="command-card">
+
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy='chmod +x ~/.shortcuts/"Start Linux"'>
+        Copy command
+      </button>
     </div>
 
-</section>
+    <pre>chmod +x ~/.shortcuts/"Start Linux"</pre>
 
+  </div>
 
-<section class="page">
-
-    <h1>Termux:API and the Camera</h1>
-
-    <p>
-        I installed Termux:API and confirmed that the camera command
-        existed:
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ command -v termux-camera-photo</span>
-
-<span class="output">/data/data/com.termux/files/usr/bin/termux-camera-photo</span>
-        </div>
-
-    </div>
-
-    <a class="resource-link"
-       href="https://f-droid.org/packages/com.termux.api/"
-       target="_blank">
-       Official Termux:API — F-Droid
-    </a>
-
-    <a class="resource-link"
-       href="https://github.com/termux/termux-api"
-       target="_blank">
-       Termux:API — Official GitHub
-    </a>
-
-    <div class="box warning">
-
-        <h3>Android camera ≠ Linux webcam</h3>
-
-        <p>
-            This is one of the most important distinctions in this
-            book. Termux:API gives Termux access to Android camera
-            functionality. It does not automatically create a
-            Linux webcam device such as <code>/dev/video0</code>.
-        </p>
-
-        <p>
-            I did not claim that I had successfully turned the phone's
-            camera into a Linux browser webcam because I had not.
-        </p>
-
-    </div>
+  <p>
+    Add the Termux:Widget to the Android home screen.
+    You should now have a shortcut named <strong>Start Linux</strong>.
+  </p>
 
 </section>
 
@@ -2444,277 +3293,200 @@ dbus-launch --exit-with-session startxfce4' &amp;
      CHAPTER 10
      ====================================================== -->
 
-<section class="page chapter-opener">
+<section class="page chapter" id="ch10">
 
-    <div class="chapter-number">10</div>
+  <div class="chapter-number">Chapter 10</div>
 
-    <div class="chapter-tag">CHAPTER TEN</div>
+  <h2>Ubuntu, Storage, Camera and Real-World Limits</h2>
 
-    <h1>Ubuntu, Recovery and Going Further</h1>
+  <h3>10.1 Ubuntu is optional</h3>
 
-    <p>
-        Debian was the environment I actually built and tested.
-        Ubuntu is another option available through PRoot-Distro.
-    </p>
+  <p>
+    Debian is our main tested environment in this tutorial.
+    Ubuntu can be installed separately if it is available in the
+    current PRoot-Distro list.
+  </p>
 
-</section>
+  <div class="command-card">
 
-
-<section class="page">
-
-    <h1>Ubuntu</h1>
-
-    <p>
-        I did not want Ubuntu to be presented as though it were
-        another name for Debian. They are separate Linux environments.
-    </p>
-
-    <p>
-        First I check what distributions are currently available:
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ proot-distro list</span>
-        </div>
-
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="proot-distro list">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        If the current list contains Ubuntu, it can be installed with
-        the corresponding current alias:
-    </p>
+    <pre>proot-distro list</pre>
 
-    <div class="terminal">
+  </div>
 
-        <div class="terminal-body">
-<span class="command">$ proot-distro install ubuntu</span>
+  <p>
+    If Ubuntu is listed:
+  </p>
 
-<span class="command">$ proot-distro login ubuntu</span>
-        </div>
+  <div class="command-card">
 
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="proot-distro install ubuntu">
+        Copy command
+      </button>
     </div>
 
-    <div class="box warning">
+    <pre>proot-distro install ubuntu</pre>
 
-        <h3>Why check the list first?</h3>
+  </div>
 
-        <p>
-            Distribution aliases and availability can change. I do
-            not want a book to make readers blindly type an old alias.
-        </p>
+  <div class="command-card">
 
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="proot-distro login ubuntu">
+        Copy command
+      </button>
     </div>
 
-    <h2>Debian or Ubuntu?</h2>
+    <pre>proot-distro login ubuntu</pre>
 
-    <p>
-        Installing Ubuntu does not remove Debian. Each PRoot-Distro
-        environment has its own filesystem and packages.
-    </p>
+  </div>
 
-</section>
+  <div class="tip">
+    <strong>Remember:</strong>
+    Ubuntu and Debian are separate environments.
+    Installing Ubuntu does not turn your Debian environment into Ubuntu.
+  </div>
 
+  <h3>10.2 Access Android shared storage</h3>
 
-<section class="page">
+  <p>
+    Return to Termux before running this command.
+  </p>
 
-    <h1>Storage</h1>
+  <div class="command-card">
 
-    <p>
-        Android storage and Linux filesystem paths are not exactly
-        the same thing.
-    </p>
-
-    <p>
-        To give Termux access to shared Android storage:
-    </p>
-
-    <div class="terminal">
-
-        <div class="terminal-body">
-<span class="command">$ termux-setup-storage</span>
-        </div>
-
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="termux-setup-storage">
+        Copy command
+      </button>
     </div>
 
-    <p>
-        Android then asks for storage permission.
-    </p>
+    <pre>termux-setup-storage</pre>
 
-    <h2>Chromium and the root warning</h2>
+    <div class="command-explain">
+      <p>
+        Android will ask for storage permission.
+        Accept it if you want Termux to access Android shared storage.
+      </p>
 
-    <div class="error box">
-
-        <h3>WARNING ENCOUNTERED</h3>
-
-        <div class="terminal">
-
-            <div class="terminal-body">
-<span class="output">Running as root without --no-sandbox is not supported</span>
-            </div>
-
-        </div>
-
+      <p>
+        Android's shared storage and the Linux filesystem are different.
+        Termux creates convenient links so that applications can work
+        with shared Android files.
+      </p>
     </div>
 
-    <p>
-        I do not recommend casually solving this by disabling browser
-        sandboxing. A safer approach is to use a normal non-root
-        desktop user where practical, or use the Firefox ESR setup
-        that was already tested in this environment.
-    </p>
+  </div>
 
-</section>
+  <h3>10.3 Camera access</h3>
 
+  <p>
+    Termux:API provides commands that communicate with Android APIs.
+  </p>
 
-<!-- ======================================================
-     RECOVERY
-     ====================================================== -->
+  <p>
+    Official source:
+    <a href="https://f-droid.org/packages/com.termux.api/" target="_blank">
+      Termux:API on F-Droid
+    </a>
+  </p>
 
-<section class="page">
+  <div class="command-card">
 
-    <h1>Recovery Guide</h1>
-
-    <p>
-        When something breaks, I do not immediately reinstall
-        everything. I work backwards from the layer that failed.
-    </p>
-
-    <table>
-
-        <tr>
-            <th>Symptom</th>
-            <th>First thing to check</th>
-        </tr>
-
-        <tr>
-            <td>Signal 9</td>
-            <td>Android phantom-process management / ADB configuration</td>
-        </tr>
-
-        <tr>
-            <td>Cannot open display</td>
-            <td>Termux:X11 and DISPLAY=:1</td>
-        </tr>
-
-        <tr>
-            <td>XFCE does not appear</td>
-            <td>DBus, X11 and shared temporary directory</td>
-        </tr>
-
-        <tr>
-            <td>No browser sound</td>
-            <td>PulseAudio and PULSE_SERVER</td>
-        </tr>
-
-        <tr>
-            <td>Wrong pip version</td>
-            <td>python3 -m pip</td>
-        </tr>
-
-        <tr>
-            <td>ADB linker error</td>
-            <td>Reinstall android-tools</td>
-        </tr>
-
-        <tr>
-            <td>Camera command exists but webcam unavailable</td>
-            <td>Android API is not a Linux V4L2 webcam</td>
-        </tr>
-
-    </table>
-
-    <div class="box success">
-
-        <h3>The rule that saved me time</h3>
-
-        <p>
-            Fix the layer that failed. Do not reinstall the whole
-            system because one component has a problem.
-        </p>
-
+    <div class="command-head">
+      <span>Termux command</span>
+      <button class="copy-btn"
+              data-copy="command -v termux-camera-photo">
+        Copy command
+      </button>
     </div>
 
-</section>
+    <pre>command -v termux-camera-photo</pre>
 
+    <div class="command-explain">
+      <p>
+        This checks whether Termux can find the camera command.
+      </p>
+    </div>
 
-<!-- ======================================================
-     COMMAND REFERENCE
-     ====================================================== -->
+  </div>
 
-<section class="page">
+  <div class="warning">
 
-    <h1>Command Reference</h1>
+    <strong>Android camera ≠ Linux webcam</strong>
 
-    <table>
+    <p>
+      Having access to <code>termux-camera-photo</code> does not
+      automatically create a Linux webcam device such as
+      <code>/dev/video0</code>.
+    </p>
 
-        <tr>
-            <th>Command</th>
-            <th>Purpose</th>
-        </tr>
+    <p>
+      Taking a photograph through Android's camera API and providing
+      a webcam stream to a Linux browser are different technical tasks.
+    </p>
 
-        <tr>
-            <td><code>pkg update</code></td>
-            <td>Refresh Termux package information</td>
-        </tr>
+  </div>
 
-        <tr>
-            <td><code>pkg upgrade -y</code></td>
-            <td>Upgrade Termux packages</td>
-        </tr>
+  <h3>10.4 What this setup can realistically replace</h3>
 
-        <tr>
-            <td><code>termux-wake-lock</code></td>
-            <td>Keep a wake lock during long sessions</td>
-        </tr>
+  <p>
+    This setup can make a phone useful for many tasks that normally
+    benefit from a desktop environment:
+  </p>
 
-        <tr>
-            <td><code>termux-x11 :1 &amp;</code></td>
-            <td>Start the X11 display</td>
-        </tr>
+  <ul>
+    <li>web browsing</li>
+    <li>basic office work</li>
+    <li>spreadsheet work</li>
+    <li>Python programming</li>
+    <li>data analysis</li>
+    <li>terminal-based development</li>
+    <li>Linux experimentation</li>
+    <li>lightweight desktop applications</li>
+  </ul>
 
-        <tr>
-            <td><code>proot-distro list</code></td>
-            <td>Show available distributions</td>
-        </tr>
+  <h3>10.5 What it does not magically solve</h3>
 
-        <tr>
-            <td><code>proot-distro login debian</code></td>
-            <td>Enter Debian</td>
-        </tr>
+  <ul>
+    <li>Every desktop application will not run.</li>
+    <li>Some Linux applications require additional configuration.</li>
+    <li>Android hardware is not automatically exposed as normal Linux hardware.</li>
+    <li>Touch input is not identical to mouse and keyboard input.</li>
+    <li>Performance depends on the phone's CPU, GPU, RAM and thermal limits.</li>
+    <li>PRoot is not the same thing as a normal Linux installation.</li>
+  </ul>
 
-        <tr>
-            <td><code>proot-distro login debian --shared-tmp</code></td>
-            <td>Enter Debian with shared temporary storage</td>
-        </tr>
+  <div class="checkpoint">
 
-        <tr>
-            <td><code>export DISPLAY=:1</code></td>
-            <td>Tell GUI applications which X display to use</td>
-        </tr>
+    <h3>Final checkpoint</h3>
 
-        <tr>
-            <td><code>dbus-launch --exit-with-session startxfce4</code></td>
-            <td>Start XFCE with a DBus session</td>
-        </tr>
+    <ul class="check-list">
+      <li>Android remains underneath the setup.</li>
+      <li>Termux provides the base environment.</li>
+      <li>Debian provides the Linux userspace.</li>
+      <li>XFCE provides the desktop.</li>
+      <li>Termux:X11 displays the desktop.</li>
+      <li>ADB can help solve Android-level process-management problems.</li>
+      <li>Audio, office software and Python can extend the setup.</li>
+      <li>Automation can make the system easier to start.</li>
+    </ul>
 
-        <tr>
-            <td><code>apt update</code></td>
-            <td>Refresh Debian package information</td>
-        </tr>
-
-        <tr>
-            <td><code>apt install package -y</code></td>
-            <td>Install a Debian package</td>
-        </tr>
-
-        <tr>
-            <td><code>python3 -m pip</code></td>
-            <td>Use pip through the selected Python interpreter</td>
-        </tr>
-
-    </table>
+  </div>
 
 </section>
 
@@ -2723,243 +3495,332 @@ dbus-launch --exit-with-session startxfce4' &amp;
      OFFICIAL RESOURCES
      ====================================================== -->
 
-<section class="page">
+<section class="page" id="resources">
 
-    <h1>Official Resources</h1>
+  <h2>Official Resources</h2>
 
-    <p>
-        I prefer linking directly to the projects rather than sending
-        readers to random APK mirrors or unofficial tutorials.
-    </p>
+  <p>
+    Software projects change. Always check the official project pages
+    for current installation instructions and compatibility information.
+  </p>
 
-    <a class="resource-link"
-       href="https://f-droid.org/packages/com.termux/"
-       target="_blank">
-       Termux — F-Droid
-    </a>
+  <div class="resource-grid">
 
-    <a class="resource-link"
-       href="https://github.com/termux/termux-app"
-       target="_blank">
-       Termux — GitHub
-    </a>
-
-    <a class="resource-link"
-       href="https://github.com/termux/termux-x11"
-       target="_blank">
-       Termux:X11 — GitHub
-    </a>
-
-    <a class="resource-link"
-       href="https://github.com/termux/termux-x11/releases/tag/nightly"
-       target="_blank">
-       Termux:X11 — Nightly Releases
-    </a>
-
-    <a class="resource-link"
-       href="https://f-droid.org/packages/com.termux.api/"
-       target="_blank">
-       Termux:API — F-Droid
-    </a>
-
-    <a class="resource-link"
-       href="https://github.com/termux/termux-api"
-       target="_blank">
-       Termux:API — GitHub
-    </a>
-
-    <a class="resource-link"
-       href="https://f-droid.org/packages/com.termux.widget/"
-       target="_blank">
-       Termux:Widget — F-Droid
-    </a>
-
-    <a class="resource-link"
-       href="https://github.com/termux/proot-distro/blob/master/README.md"
-       target="_blank">
-       PRoot-Distro Documentation
-    </a>
-
-    <a class="resource-link"
-       href="https://github.com/agnostic-apollo/Android-Docs/blob/master/en/docs/apps/processes/phantom-cached-and-empty-processes.md"
-       target="_blank">
-       Android Phantom / Cached Process Documentation
-    </a>
-
-</section>
-
-
-<!-- ======================================================
-     GLOSSARY
-     ====================================================== -->
-
-<section class="page">
-
-    <h1>Glossary</h1>
-
-    <h3>ADB</h3>
-    <p>
-        Android Debug Bridge. A tool that allows commands to be sent
-        to an Android device.
-    </p>
-
-    <h3>DBus</h3>
-    <p>
-        A communication system used by Linux desktop applications
-        and services.
-    </p>
-
-    <h3>Display</h3>
-    <p>
-        The X11 graphical destination used by GUI applications.
-    </p>
-
-    <h3>PRoot</h3>
-    <p>
-        A userspace mechanism that allows a Linux filesystem and
-        environment to operate without traditional root access.
-    </p>
-
-    <h3>XFCE</h3>
-    <p>
-        A lightweight Linux desktop environment.
-    </p>
-
-    <h3>PulseAudio</h3>
-    <p>
-        A sound server used to provide audio services to applications.
-    </p>
-
-    <h3>Virtual Environment</h3>
-    <p>
-        An isolated Python environment where packages can be installed
-        separately from the system Python environment.
-    </p>
-
-    <h3>Termux:X11</h3>
-    <p>
-        The X11 display component used to show Linux graphical
-        applications on Android.
-    </p>
-
-</section>
-
-
-<!-- ======================================================
-     FINAL PAGE
-     ====================================================== -->
-
-<section class="page chapter-opener">
-
-    <div class="chapter-number">✓</div>
-
-    <div class="chapter-tag">FINAL CHECKPOINT</div>
-
-    <h1>What I Built</h1>
-
-    <p>
-        I started with an Android phone and a terminal.
-        Step by step, I built a Linux environment with Debian,
-        XFCE, Firefox, audio, LibreOffice, Python, Thonny and
-        automation.
-    </p>
-
-    <p>
-        More importantly, I learned how to troubleshoot the layers
-        underneath it when something stopped working.
-    </p>
-
-    <div class="checkpoint">
-
-        <div class="checkpoint-title">
-            AND THAT IS THE REAL POINT
-        </div>
-
-        <p>
-            The goal was never just to make a desktop appear.
-            The goal was to understand enough of the system that
-            I could make it work again when something went wrong.
-        </p>
-
+    <div class="resource">
+      <strong>Termux</strong>
+      <a href="https://f-droid.org/packages/com.termux/" target="_blank">
+        F-Droid
+      </a>
+      <a href="https://github.com/termux/termux-app" target="_blank">
+        GitHub
+      </a>
     </div>
 
-    <p>
-        <strong>— NNANNA POLYCARP</strong>
-    </p>
+    <div class="resource">
+      <strong>Termux:X11</strong>
+      <a href="https://github.com/termux/termux-x11" target="_blank">
+        GitHub
+      </a>
+      <a href="https://github.com/termux/termux-x11/releases/tag/nightly"
+         target="_blank">
+        Nightly Releases
+      </a>
+    </div>
+
+    <div class="resource">
+      <strong>PRoot-Distro</strong>
+      <a href="https://github.com/termux/proot-distro/blob/master/README.md"
+         target="_blank">
+        Official Documentation
+      </a>
+    </div>
+
+    <div class="resource">
+      <strong>Termux:API</strong>
+      <a href="https://f-droid.org/packages/com.termux.api/" target="_blank">
+        F-Droid
+      </a>
+      <a href="https://github.com/termux/termux-api" target="_blank">
+        GitHub
+      </a>
+    </div>
+
+    <div class="resource">
+      <strong>Termux:Widget</strong>
+      <a href="https://f-droid.org/packages/com.termux.widget/" target="_blank">
+        F-Droid
+      </a>
+    </div>
+
+    <div class="resource">
+      <strong>Android Phantom Processes</strong>
+      <a href="https://github.com/agnostic-apollo/Android-Docs/blob/master/en/docs/apps/processes/phantom-cached-and-empty-processes.md"
+         target="_blank">
+        Android documentation
+      </a>
+    </div>
+
+  </div>
 
 </section>
 
-</main>
 
+<!-- ======================================================
+     QUICK REFERENCE
+     ====================================================== -->
+
+<section class="page">
+
+  <h2>Quick Reference</h2>
+
+  <h3>Leave Debian</h3>
+
+  <div class="command-card">
+    <div class="command-head">
+      <span>Command</span>
+      <button class="copy-btn" data-copy="exit">Copy command</button>
+    </div>
+    <pre>exit</pre>
+  </div>
+
+  <h3>Enter Debian</h3>
+
+  <div class="command-card">
+    <div class="command-head">
+      <span>Command</span>
+      <button class="copy-btn"
+              data-copy="proot-distro login debian --shared-tmp">
+        Copy command
+      </button>
+    </div>
+    <pre>proot-distro login debian --shared-tmp</pre>
+  </div>
+
+  <h3>Start X11</h3>
+
+  <div class="command-card">
+    <div class="command-head">
+      <span>Command</span>
+      <button class="copy-btn"
+              data-copy="termux-x11 :1 &">
+        Copy command
+      </button>
+    </div>
+    <pre>termux-x11 :1 &amp;</pre>
+  </div>
+
+  <h3>Set the display</h3>
+
+  <div class="command-card">
+    <div class="command-head">
+      <span>Command</span>
+      <button class="copy-btn"
+              data-copy="export DISPLAY=:1">
+        Copy command
+      </button>
+    </div>
+    <pre>export DISPLAY=:1</pre>
+  </div>
+
+  <h3>Start XFCE</h3>
+
+  <div class="command-card">
+    <div class="command-head">
+      <span>Command</span>
+      <button class="copy-btn"
+              data-copy="dbus-launch --exit-with-session startxfce4">
+        Copy command
+      </button>
+    </div>
+    <pre>dbus-launch --exit-with-session startxfce4</pre>
+  </div>
+
+  <h3>Check PRoot-Distro</h3>
+
+  <div class="command-card">
+    <div class="command-head">
+      <span>Command</span>
+      <button class="copy-btn"
+              data-copy="proot-distro list">
+        Copy command
+      </button>
+    </div>
+    <pre>proot-distro list</pre>
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     BACK COVER
+     ====================================================== -->
+
+<section class="back-cover">
+
+  <div class="eyebrow">TERMUX — PHONE AS A LAPTOP</div>
+
+  <h2>
+    What if the computer you need is already in your pocket?
+  </h2>
+
+  <p>
+    This book takes you from a normal Android phone to a working
+    Linux desktop environment, one carefully explained step at a time.
+  </p>
+
+  <div class="back-box">
+
+    <p>
+      You will learn how Termux, PRoot-Distro, Debian, XFCE and
+      Termux:X11 fit together; how to run graphical Linux applications;
+      how to diagnose the infamous <strong>signal 9</strong> problem;
+      how to use ADB and Wireless Debugging; and how to add audio,
+      LibreOffice, Python, data-analysis tools and startup automation.
+    </p>
+
+  </div>
+
+  <p>
+    This is not about pretending that an Android phone is identical
+    to a laptop.
+  </p>
+
+  <p>
+    It is about understanding what your device can do when you learn
+    how to use the layers underneath it.
+  </p>
+
+  <div class="back-author">
+    NNANNA POLYCARP
+  </div>
+
+</section>
+
+</div>
+
+
+<!-- ======================================================
+     JAVASCRIPT
+     ====================================================== -->
 
 <script>
 
 /* =========================================================
-   COPY COMMAND
+   COPY BUTTONS
+   Every button copies only the command attached to it.
    ========================================================= */
 
-function copyCommand(button) {
+document.querySelectorAll(".copy-btn").forEach(function(button){
 
-    const terminal = button.closest(".terminal");
-    const body = terminal.querySelector(".terminal-body");
+  button.addEventListener("click", async function(){
 
-    if (!body) return;
+    const command = button.getAttribute("data-copy");
 
-    const text = body.innerText
-        .replace(/^Copy\s*/i, "")
-        .trim();
+    try{
 
-    navigator.clipboard.writeText(text).then(() => {
+      await navigator.clipboard.writeText(command);
 
-        const original = button.innerText;
+      const original = button.textContent;
 
-        button.innerText = "Copied!";
+      button.textContent = "Copied ✓";
 
-        setTimeout(() => {
-            button.innerText = original;
-        }, 1200);
+      setTimeout(function(){
+        button.textContent = original;
+      },1400);
 
-    }).catch(() => {
+    }catch(error){
 
-        alert("Copy failed. Select the command manually.");
+      /* Fallback for browsers where Clipboard API is restricted */
 
-    });
+      const area = document.createElement("textarea");
 
-}
+      area.value = command;
+      area.style.position = "fixed";
+      area.style.left = "-9999px";
 
+      document.body.appendChild(area);
 
-/* =========================================================
-   KEYBOARD SHORTCUT
-   ========================================================= */
+      area.select();
 
-document.addEventListener("keydown", function(event) {
+      try{
+        document.execCommand("copy");
 
-    if (event.key === "Escape") {
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
+        const original = button.textContent;
+
+        button.textContent = "Copied ✓";
+
+        setTimeout(function(){
+          button.textContent = original;
+        },1400);
+
+      }catch(copyError){
+
+        button.textContent = "Copy failed";
+
+        setTimeout(function(){
+          button.textContent = "Copy command";
+        },1400);
+
+      }
+
+      document.body.removeChild(area);
+
     }
 
+  });
+
 });
 
 
 /* =========================================================
-   EXTERNAL LINKS
+   READING PROGRESS
    ========================================================= */
 
-document.querySelectorAll('a[target="_blank"]').forEach(link => {
+window.addEventListener("scroll",function(){
 
-    link.addEventListener("click", function() {
+  const documentHeight =
+    document.documentElement.scrollHeight -
+    document.documentElement.clientHeight;
 
-        console.log(
-            "Opening official resource:",
-            this.href
-        );
+  const progress =
+    documentHeight > 0
+      ? (window.scrollY / documentHeight) * 100
+      : 0;
 
-    });
+  document.getElementById("progress").style.width =
+    progress + "%";
 
 });
+
+
+/* =========================================================
+   BACK TO TOP
+   ========================================================= */
+
+const topButton = document.createElement("button");
+
+topButton.className = "return-top";
+topButton.setAttribute("aria-label","Return to top");
+topButton.textContent = "↑";
+
+topButton.addEventListener("click",function(){
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+});
+
+document.body.appendChild(topButton);
+
+
+/* =========================================================
+   SIMPLE BOOK SEARCH
+   Press CTRL/CMD + F normally, but this also makes headings
+   easy to locate through browser search.
+   ========================================================= */
+
+document.title =
+  "TERMUX — PHONE AS A LAPTOP | NNANNA POLYCARP";
 
 </script>
 
